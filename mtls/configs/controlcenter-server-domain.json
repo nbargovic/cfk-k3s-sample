@@ -1,0 +1,19 @@
+{
+  "CN": "controlcenter",
+  "hosts": [
+    "controlcenter",
+    "controlcenter.confluent-ironbank.svc.cluster.local",
+    "*.controlcenter.confluent-ironbank.svc.cluster.local"
+  ],
+  "key": {
+    "algo": "rsa",
+    "size": 2048
+  },
+  "names": [
+    {
+      "C": "US",
+      "ST": "CA",
+      "L": "MountainView"
+    }
+  ]
+}

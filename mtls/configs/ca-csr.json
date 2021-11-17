@@ -1,0 +1,16 @@
+{
+  "CN": "Nick",
+  "key": {
+    "algo": "rsa",
+    "size": 2048
+  },
+  "names": [
+    {
+      "C": "US",
+      "L": "MountainView",
+      "O": "Confluent",
+      "ST": "CA",
+      "OU": "Operator"
+    }
+  ]
+}

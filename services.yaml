@@ -1,0 +1,113 @@
+
+apiVersion: platform.confluent.io/v1beta1
+kind: KsqlDB
+metadata:
+  name: ksqldb
+  namespace: confluent-ironbank
+spec:
+  replicas: 2
+  image:
+    application: registry1.dso.mil/ironbank/confluentinc/cp-ksqldb-server-operator:6.1.3.0
+    init: confluentinc/confluent-init-container:2.0.3
+    pullSecretRef:
+      - ironbank-registry
+  dataVolumeCapacity: 10Gi
+  tls:
+    secretRef: tls-ksqldb
+  dependencies:
+    kafka:
+      bootstrapEndpoint: kafka.confluent-ironbank.svc.cluster.local:9071
+      authentication:
+        type: mtls
+      tls:
+        enabled: true
+  podTemplate:
+    podSecurityContext: { } # Disable the custom pod security context, to use the default
+---
+apiVersion: platform.confluent.io/v1beta1
+kind: SchemaRegistry
+metadata:
+  name: schemaregistry
+  namespace: confluent-ironbank
+spec:
+  replicas: 1
+  image:
+    application: registry1.dso.mil/ironbank/confluentinc/cp-schema-registry-operator:6.1.2
+    init: confluentinc/confluent-init-container:2.0.3
+    pullSecretRef:
+      - ironbank-registry
+  tls:
+    secretRef: tls-schemaregistry
+  dependencies:
+    kafka:
+      bootstrapEndpoint: kafka.confluent-ironbank.svc.cluster.local:9071
+      authentication:
+        type: mtls
+      tls:
+        enabled: true
+  podTemplate:
+    podSecurityContext: { } # Disable the custom pod security context, to use the default
+---
+apiVersion: platform.confluent.io/v1beta1
+kind: ControlCenter
+metadata:
+  name: controlcenter
+  namespace: confluent-ironbank
+spec:
+  replicas: 1
+  image:
+    application: registry1.dso.mil/ironbank/confluentinc/cp-enterprise-control-center-operator:6.1.3.0
+    init: confluentinc/confluent-init-container:2.0.3
+    pullSecretRef:
+      - ironbank-registry
+  dataVolumeCapacity: 10Gi
+  tls:
+    secretRef: tls-controlcenter
+  dependencies:
+    kafka:
+      bootstrapEndpoint: kafka.confluent-ironbank.svc.cluster.local:9071
+      authentication:
+        type: mtls
+      tls:
+        enabled: true
+    schemaRegistry:
+      url: https://schemaregistry.confluent-ironbank.svc.cluster.local:8081
+      tls:
+        enabled: true
+    ksqldb:
+    - name: ksql
+      url: https://ksqldb.confluent-ironbank.svc.cluster.local:8088
+      tls:
+        enabled: true
+    connect:
+    - name: connect-dev
+      url:  https://connect.confluent-ironbank.svc.cluster.local:8083
+      tls:
+        enabled: true
+  podTemplate:
+    podSecurityContext: { } # Disable the custom pod security context, to use the default
+---
+apiVersion: platform.confluent.io/v1beta1
+kind: Connect
+metadata:
+  name: connect
+  namespace: confluent-ironbank
+spec:
+  replicas: 2
+  image:
+    #application: registry1.dso.mil/ironbank/confluentinc/cp-server-connect-operator:6.1.2
+    application:  bargovic/cp-connect-with-http-sink:1.5.0
+    init: confluentinc/confluent-init-container:2.0.3
+    pullSecretRef:
+      - ironbank-registry
+  tls:
+    secretRef: tls-connect
+  dependencies:
+    kafka:
+      bootstrapEndpoint: kafka.confluent-ironbank.svc.cluster.local:9071
+      authentication:
+        type: mtls
+      tls:
+        enabled: true
+  podTemplate:
+    podSecurityContext: { } # Disable the custom pod security context, to use the default

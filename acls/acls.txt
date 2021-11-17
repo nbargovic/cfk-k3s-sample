@@ -1,0 +1,233 @@
+cat <<-EOF > /opt/confluentinc/kafka.properties
+bootstrap.servers=kafka.confluent-ironbank.svc.cluster.local:9071
+security.protocol=SSL
+ssl.keystore.location=/mnt/sslcerts/keystore.p12
+ssl.keystore.password=mystorepassword
+ssl.truststore.location=/mnt/sslcerts/truststore.p12
+ssl.truststore.password=mystorepassword
+EOF
+
+/bin/kafka-acls --bootstrap-server kafka.confluent-ironbank.svc.cluster.local:9071 \
+ --command-config /opt/confluentinc/kafka.properties \
+ --add \
+ --allow-principal "User:controlcenter" \
+ --operation Read --operation Write --operation Create --operation Alter --operation AlterConfigs --operation Delete \
+ --topic _confluent-controlcenter \
+ --resource-pattern-type prefixed
+
+/bin/kafka-acls --bootstrap-server kafka.confluent-ironbank.svc.cluster.local:9071 \
+ --command-config /opt/confluentinc/kafka.properties \
+ --add \
+ --allow-principal "User:controlcenter" \
+ --operation Read --operation Write --operation Create \
+ --topic _confluent-command
+
+/bin/kafka-acls --bootstrap-server kafka.confluent-ironbank.svc.cluster.local:9071 \
+ --command-config /opt/confluentinc/kafka.properties \
+ --add \
+ --allow-principal "User:controlcenter" \
+ --operation Read --operation Write --operation Create --operation DescribeConfigs --operation Describe \
+ --topic _confluent-metrics
+
+/bin/kafka-acls --bootstrap-server kafka.confluent-ironbank.svc.cluster.local:9071 \
+ --command-config /opt/confluentinc/kafka.properties \
+ --add \
+ --allow-principal "User:controlcenter" \
+ --operation Read --operation Write --operation Create --operation DescribeConfigs --operation Describe --operation Alter --operation AlterConfigs --operation Delete \
+ --topic _confluent-monitoring \
+ --topic _confluent-telemetry-metrics \
+ --topic confluent-ironbank.connect-configs \
+ --topic confluent-ironbank.connect-offsets \
+ --topic confluent-ironbank.connect-status \
+  --topic __consumer_offsets
+
+/bin/kafka-acls --bootstrap-server kafka.confluent-ironbank.svc.cluster.local:9071 \
+ --command-config /opt/confluentinc/kafka.properties \
+ --add \
+ --allow-principal "User:controlcenter" \
+ --operation Describe --operation Alter --operation AlterConfigs --operation Create --operation Delete --operation DescribeConfigs \
+ --topic _confluent_balancer_api_state \
+ --topic _confluent_balancer_broker_samples \
+ --topic _confluent_balancer_partition_samples \
+ --topic _confluent-command \
+ --topic _confluent-ksql-confluent.ksqldb__command_topic \
+ --topic _confluent-license \
+ --topic _confluent-telemetry-metrics \
+ --topic _schemas_schemaregistry_confluent-ironbank
+
+/bin/kafka-acls --bootstrap-server kafka.confluent-ironbank.svc.cluster.local:9071 \
+ --command-config /opt/confluentinc/kafka.properties \
+ --add \
+ --allow-principal "User:controlcenter" \
+ --operation DescribeConfigs \
+ --topic _confluent-command
+
+/bin/kafka-acls --bootstrap-server kafka.confluent-ironbank.svc.cluster.local:9071 \
+ --command-config /opt/confluentinc/kafka.properties \
+ --add \
+ --allow-principal "User:controlcenter" \
+ --operation DescribeConfigs \
+ --topic _confluent-controlcenter \
+ --resource-pattern-type prefixed
+
+/bin/kafka-acls --bootstrap-server kafka.confluent-ironbank.svc.cluster.local:9071 \
+ --command-config /opt/confluentinc/kafka.properties \
+ --add \
+ --allow-principal "User:controlcenter" \
+ --operation AlterConfigs --operation Create --operation Describe --operation DescribeConfigs --operation Describe --operation ClusterAction \
+ --cluster kafka-cluster
+
+/bin/kafka-acls --bootstrap-server kafka.confluent-ironbank.svc.cluster.local:9071 \
+ --command-config /opt/confluentinc/kafka.properties \
+ --add \
+ --allow-principal "User:controlcenter" \
+ --operation AlterConfigs --operation Create --operation Describe --operation DescribeConfigs --operation Create \
+ --cluster kafka-cluster
+
+/bin/kafka-acls --bootstrap-server kafka.confluent-ironbank.svc.cluster.local:9071 \
+ --command-config /opt/confluentinc/kafka.properties \
+ --add \
+ --allow-principal "User:controlcenter" \
+ --operation Describe --operation Delete --operation Read \
+ --group ConfluentTelemetryReporterSampler \
+ --resource-pattern-type prefixed
+
+/bin/kafka-acls --bootstrap-server kafka.confluent-ironbank.svc.cluster.local:9071 \
+ --command-config /opt/confluentinc/kafka.properties \
+ --add \
+ --allow-principal "User:controlcenter" \
+ --operation All \
+ --group _confluent-controlcenter \
+ --resource-pattern-type prefixed
+
+/bin/kafka-acls --bootstrap-server kafka.confluent-ironbank.svc.cluster.local:9071 \
+ --command-config /opt/confluentinc/kafka.properties \
+ --add \
+ --allow-principal "User:connect" \
+ --operation Read --operation Write --operation Create \
+ --topic confluent-ironbank.connect- \
+ --resource-pattern-type prefixed
+
+/bin/kafka-acls --bootstrap-server kafka.confluent-ironbank.svc.cluster.local:9071 \
+ --command-config /opt/confluentinc/kafka.properties \
+ --add \
+ --allow-principal "User:connect" \
+ --operation Write \
+ --topic _confluent-monitoring \
+ --resource-pattern-type prefixed
+
+### The Connect consumer group is: <namespace>.<connect-cluster-name>
+/bin/kafka-acls --bootstrap-server kafka.confluent-ironbank.svc.cluster.local:9071 \
+ --command-config /opt/confluentinc/kafka.properties \
+ --add \
+ --allow-principal "User:connect" \
+ --operation Read \
+ --group confluent-ironbank.connect
+
+/bin/kafka-acls --bootstrap-server kafka.confluent-ironbank.svc.cluster.local:9071 \
+ --command-config /opt/confluentinc/kafka.properties \
+ --add \
+ --allow-principal "User:connect" \
+ --operation Create --operation ClusterAction \
+ --cluster kafka-cluster
+
+/bin/kafka-acls --bootstrap-server kafka.confluent-ironbank.svc.cluster.local:9071 \
+ --command-config /opt/confluentinc/kafka.properties \
+ --add \
+ --allow-principal "User:connect" \
+ --operation Describe \
+ --topic _confluent-controlcenter \
+ --resource-pattern-type prefixed
+
+ /bin/kafka-acls --bootstrap-server kafka.confluent-ironbank.svc.cluster.local:9071 \
+ --command-config /opt/confluentinc/kafka.properties \
+ --add \
+ --allow-principal "User:connect" \
+ --operation Describe \
+ --topic __consumer_offsets \
+ --topic _confluent-command \
+ --topic _confluent-ksql-confluent.ksqldb__command_topic \
+ --topic _confluent-license \
+ --topic _confluent-metrics \
+ --topic _confluent-telemetry-metrics \
+ --topic _confluent_balancer_api_state \
+ --topic _confluent_balancer_broker_samples \
+ --topic _confluent_balancer_partition_samples \
+ --topic _schemas_schemaregistry_confluent-ironbank \
+ --topic confluent-ironbank.connect-offsets
+
+/bin/kafka-acls --bootstrap-server kafka.confluent-ironbank.svc.cluster.local:9071 \
+ --command-config /opt/confluentinc/kafka.properties \
+ --add \
+ --allow-principal "User:ksql" \
+ --operation Read --operation Write --operation Create \
+ --topic app1_ \
+ --resource-pattern-type prefixed
+
+/bin/kafka-acls --bootstrap-server kafka.confluent-ironbank.svc.cluster.local:9071 \
+ --command-config /opt/confluentinc/kafka.properties \
+ --add \
+ --allow-principal "User:ksql" \
+ --operation All \
+ --topic _confluent-ksql-confluent \
+ --resource-pattern-type prefixed
+
+ /bin/kafka-acls --bootstrap-server kafka.confluent-ironbank.svc.cluster.local:9071 \
+ --command-config /opt/confluentinc/kafka.properties \
+ --add \
+ --allow-principal "User:ksql" \
+ --operation Describe \
+ --cluster kafka-cluster
+
+/bin/kafka-acls --bootstrap-server kafka.confluent-ironbank.svc.cluster.local:9071 \
+ --command-config /opt/confluentinc/kafka.properties \
+ --add \
+ --allow-principal "User:sr" \
+ --operation Read --operation Write --operation Create \
+ --topic _confluent-license
+
+/bin/kafka-acls --bootstrap-server kafka.confluent-ironbank.svc.cluster.local:9071 \
+ --command-config /opt/confluentinc/kafka.properties \
+ --add \
+ --allow-principal "User:sr" \
+ --operation Describe \
+ --topic __consumer_offsets \
+ --topic _confluent-metrics \
+ --topic _confluent-telemetry-metrics \
+ --topic _confluent-command \
+ --topic _confluent-monitoring \
+ --topic confluent-ironbank.connect-configs \
+ --topic confluent-ironbank.connect-offsets \
+ --topic confluent-ironbank.connect-status \
+ --topic _confluent-ksql-confluent.ksqldb__command_topic
+ 
+/bin/kafka-acls --bootstrap-server kafka.confluent-ironbank.svc.cluster.local:9071 \
+ --command-config /opt/confluentinc/kafka.properties \
+ --add \
+ --allow-principal "User:sr" \
+ --operation Describe \
+ --topic _confluent_balancer \
+ --topic _confluent-controlcenter \
+ --resource-pattern-type prefixed
+
+/bin/kafka-acls --bootstrap-server kafka.confluent-ironbank.svc.cluster.local:9071 \
+ --command-config /opt/confluentinc/kafka.properties \
+ --add \
+ --allow-principal "User:sr" \
+ --operation Read --operation Write --operation Create --operation DescribeConfigs --operation Describe \
+ --topic _schemas_schemaregistry_confluent-ironbank
+
+/bin/kafka-acls --bootstrap-server kafka.confluent-ironbank.svc.cluster.local:9071 \
+ --command-config /opt/confluentinc/kafka.properties \
+ --add \
+ --allow-principal "User:sr" \
+ --operation Read \
+ --group id_schemaregistry_confluent-ironbank
+
+/bin/kafka-acls --bootstrap-server kafka.confluent-ironbank.svc.cluster.local:9071 \
+ --command-config /opt/confluentinc/kafka.properties \
+ --add \
+ --allow-principal "User:sr" \
+ --operation ClusterAction \
+ --cluster kafka-cluster
+
