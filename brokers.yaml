@@ -64,6 +64,7 @@ spec:
     type: simple
     superUsers:
       - User:kafka
+      - User:admin
   dependencies:
     zookeeper:
       endpoint: zookeeper.confluent-ironbank.svc.cluster.local:2182

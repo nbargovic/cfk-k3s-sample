@@ -1,3 +1,2 @@
-controlcenter: controlcenter-secret,Administrators
-admin: Developer1,Administrators
-admin1: Developer2,Administrators
+admin: password1,Administrators
+nick: password2,Restricted

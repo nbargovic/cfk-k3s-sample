@@ -10,6 +10,14 @@ EOF
 /bin/kafka-acls --bootstrap-server kafka.confluent-ironbank.svc.cluster.local:9071 \
  --command-config /opt/confluentinc/kafka.properties \
  --add \
+ --allow-principal "User:admin" \
+ --operation Read --operation Write --operation Create --operation Alter --operation AlterConfigs --operation Delete \
+ --topic _confluent-controlcenter \
+ --resource-pattern-type prefixed
+
+/bin/kafka-acls --bootstrap-server kafka.confluent-ironbank.svc.cluster.local:9071 \
+ --command-config /opt/confluentinc/kafka.properties \
+ --add \
  --allow-principal "User:controlcenter" \
  --operation Read --operation Write --operation Create --operation Alter --operation AlterConfigs --operation Delete \
  --topic _confluent-controlcenter \

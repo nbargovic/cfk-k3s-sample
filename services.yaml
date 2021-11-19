@@ -61,6 +61,15 @@ spec:
     pullSecretRef:
       - ironbank-registry
   dataVolumeCapacity: 10Gi
+  authentication:
+    type: basic
+    basic:
+      roles:
+        - Administrators
+        - Restricted
+      restrictedRoles:
+        - Restricted
+      secretRef: basicsecret
   tls:
     secretRef: tls-controlcenter
   dependencies:
