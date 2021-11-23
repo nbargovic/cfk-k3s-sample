@@ -42,7 +42,11 @@ spec:
     #init: registry1.dso.mil/ironbank/confluentinc/confluent-init-container:2.0.3
     pullSecretRef:
       - ironbank-registry
-  dataVolumeCapacity: 10Gi
+  dataVolumeCapacity: 25Gi
+  configOverrides:
+    server:
+      - "log.retention.hours=72"
+      # - "allow.everyone.if.no.acl.found=true"
   tls:
     secretRef: tls-kafka
   listeners:
@@ -64,7 +68,7 @@ spec:
     type: simple
     superUsers:
       - User:kafka
-      - User:admin
+      - User:controlcenter
   dependencies:
     zookeeper:
       endpoint: zookeeper.confluent-ironbank.svc.cluster.local:2182
