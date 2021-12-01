@@ -50,7 +50,7 @@ EOF
  --topic _confluent_balancer_broker_samples \
  --topic _confluent_balancer_partition_samples \
  --topic _confluent-command \
- --topic _confluent-ksql-confluent.ksqldb__command_topic \
+ --topic _confluent-ksql-confluent-ironbank.ksqldb__command_topic \
  --topic _confluent-license \
  --topic _confluent-telemetry-metrics \
  --topic _schemas_schemaregistry_confluent-ironbank
@@ -145,7 +145,7 @@ EOF
  --operation Describe \
  --topic __consumer_offsets \
  --topic _confluent-command \
- --topic _confluent-ksql-confluent.ksqldb__command_topic \
+ --topic _confluent-ksql-confluent-ironbank.ksqldb__command_topic \
  --topic _confluent-license \
  --topic _confluent-metrics \
  --topic _confluent-telemetry-metrics \
@@ -168,7 +168,7 @@ EOF
  --add \
  --allow-principal "User:ksql" \
  --operation All \
- --topic _confluent-ksql-confluent \
+ --topic _confluent-ksql-confluent-ironbank \
  --resource-pattern-type prefixed
 
  /bin/kafka-acls --bootstrap-server kafka.confluent-ironbank.svc.cluster.local:9071 \
@@ -198,7 +198,7 @@ EOF
  --topic confluent-ironbank.connect-configs \
  --topic confluent-ironbank.connect-offsets \
  --topic confluent-ironbank.connect-status \
- --topic _confluent-ksql-confluent.ksqldb__command_topic
+ --topic _confluent-ksql-confluent-ironbank.ksqldb__command_topic
  
 /bin/kafka-acls --bootstrap-server kafka.confluent-ironbank.svc.cluster.local:9071 \
  --command-config /opt/confluentinc/kafka.properties \
@@ -230,3 +230,8 @@ EOF
  --operation ClusterAction \
  --cluster kafka-cluster
 
+kafka-acls --bootstrap-server kafka.confluent-ironbank.svc.cluster.local:9071 \
+ --command-config /opt/confluentinc/kafka.properties \
+ --add \
+ --allow-principal User:restproxy --operation Create --operation Read --operation Write \
+ --topic _confluent-command

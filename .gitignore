@@ -1,2 +1,5 @@
 .idea/
 .DS_Store
+truststore.p12
+keystore.p12
+jksPassword.txt
