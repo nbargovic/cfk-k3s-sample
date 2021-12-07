@@ -1,0 +1,34 @@
+apiVersion: platform.confluent.io/v1beta1
+kind: KafkaRestProxy
+metadata:
+  name: kafkarestproxy
+  namespace: confluent-ironbank
+spec:
+  replicas: 2
+  image:
+    application: bargovic/cp-kafka-rest-repo1:6.2.1
+    init: confluentinc/confluent-init-container:2.0.3
+    pullSecretRef:
+      - ironbank-registry
+  authentication:
+    type: mtls
+  tls:
+    secretRef: tls-restproxy
+  dependencies:
+    schemaRegistry:
+      url: https://schemaregistry.confluent-ironbank.svc.cluster.local:8081
+      tls:
+        enabled: true
+    kafka:
+      bootstrapEndpoint: kafka.confluent-ironbank.svc.cluster.local:9071
+      authentication:
+        type: mtls
+      tls:
+        enabled: true
+  configOverrides:
+    server:
+      # enable mtls to mtls principal propagation
+      - "confluent.rest.auth.propagate.method=SSL"
+      - "kafka.rest.resource.extension.class=io.confluent.kafkarest.security.KafkaRestSecurityResourceExtension"
+  podTemplate:
+    podSecurityContext: { } # Disable the custom pod security context, to use the default

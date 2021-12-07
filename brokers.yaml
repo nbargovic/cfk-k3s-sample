@@ -6,7 +6,7 @@ metadata:
 spec:
   replicas: 3
   image:
-    application: registry1.dso.mil/ironbank/confluentinc/cp-zookeeper-operator:6.1.3.0
+    application: bargovic/cp-zookeeper-repo1:6.2.1
     init: confluentinc/confluent-init-container:2.0.3
     #init: registry1.dso.mil/ironbank/confluentinc/confluent-init-container:2.0.3
     pullSecretRef:
@@ -37,7 +37,7 @@ metadata:
 spec:
   replicas: 3
   image:
-    application: registry1.dso.mil/ironbank/confluentinc/cp-server-operator:6.1.3
+    application: bargovic/cp-server-repo1:6.2.1
     init: confluentinc/confluent-init-container:2.0.3
     #init: registry1.dso.mil/ironbank/confluentinc/confluent-init-container:2.0.3
     pullSecretRef:

@@ -7,7 +7,7 @@ metadata:
 spec:
   replicas: 2
   image:
-    application: registry1.dso.mil/ironbank/confluentinc/cp-ksqldb-server-operator:6.1.3.0
+    application: bargovic/cp-ksqldb-server-repo1:6.2.1
     init: confluentinc/confluent-init-container:2.0.3
     pullSecretRef:
       - ironbank-registry
@@ -32,7 +32,7 @@ metadata:
 spec:
   replicas: 1
   image:
-    application: registry1.dso.mil/ironbank/confluentinc/cp-schema-registry-operator:6.1.2
+    application: bargovic/cp-schema-registry-repo1:6.2.1.0
     init: confluentinc/confluent-init-container:2.0.3
     pullSecretRef:
       - ironbank-registry
@@ -56,7 +56,7 @@ metadata:
 spec:
   replicas: 1
   image:
-    application: registry1.dso.mil/ironbank/confluentinc/cp-enterprise-control-center-operator:6.1.3.0
+    application: bargovic/cp-enterprise-control-center-repo1:6.2.1.0
     init: confluentinc/confluent-init-container:2.0.3
     pullSecretRef:
       - ironbank-registry
@@ -104,8 +104,7 @@ metadata:
 spec:
   replicas: 2
   image:
-    #application: registry1.dso.mil/ironbank/confluentinc/cp-server-connect-operator:6.1.2
-    application:  bargovic/cp-connect-with-http-sink:1.5.0
+    application:  bargovic/cp-server-connect-repo1:6.2.1.0
     init: confluentinc/confluent-init-container:2.0.3
     pullSecretRef:
       - ironbank-registry
