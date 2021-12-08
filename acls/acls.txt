@@ -235,3 +235,10 @@ kafka-acls --bootstrap-server kafka.confluent-ironbank.svc.cluster.local:9071 \
  --add \
  --allow-principal User:restproxy --operation Create --operation Read --operation Write \
  --topic _confluent-command
+
+#this topic can be anything, used for testing a client apps access through restproxy
+kafka-acls --bootstrap-server kafka.confluent-ironbank.svc.cluster.local:9071 \
+ --command-config /opt/confluentinc/kafka.properties \
+ --add \
+ --allow-principal User:clientapp --operation Create --operation Read --operation Write \
+ --topic _confluent-metrics
