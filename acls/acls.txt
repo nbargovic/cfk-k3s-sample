@@ -250,3 +250,23 @@ kafka-acls --bootstrap-server kafka.confluent-ironbank.svc.cluster.local:9071 \
  --allow-principal User:connect --operation Create --operation Read --operation Write \
  --topic pg. \
  --resource-pattern-type prefixed
+
+ #allow ksqldb to manipulate topics for streaming
+ kafka-acls --bootstrap-server kafka.confluent-ironbank.svc.cluster.local:9071 \
+  --command-config /opt/confluentinc/kafka.properties \
+  --add \
+  --allow-principal User:ksql --operation All \
+  --topic '*' \
+  --cluster
+
+kafka-acls --bootstrap-server kafka.confluent-ironbank.svc.cluster.local:9071 \
+    --command-config /opt/confluentinc/kafka.properties \
+    --add \
+    --allow-principal User:ksql --operation All \
+    --transactional-id '*'
+
+ kafka-acls --bootstrap-server kafka.confluent-ironbank.svc.cluster.local:9071 \
+  --command-config /opt/confluentinc/kafka.properties \
+  --add \
+  --allow-principal User:ksql --operation All \
+  --group '*'

@@ -21,6 +21,10 @@ spec:
         type: mtls
       tls:
         enabled: true
+    schemaRegistry:
+      url: https://schemaregistry.confluent-ironbank.svc.cluster.local:8081
+      tls:
+        enabled: true
   podTemplate:
     podSecurityContext: { } # Disable the custom pod security context, to use the default
 ---
@@ -115,6 +119,10 @@ spec:
       bootstrapEndpoint: kafka.confluent-ironbank.svc.cluster.local:9071
       authentication:
         type: mtls
+      tls:
+        enabled: true
+    schemaRegistry:
+      url: https://schemaregistry.confluent-ironbank.svc.cluster.local:8081
       tls:
         enabled: true
   podTemplate:
