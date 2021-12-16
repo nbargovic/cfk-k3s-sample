@@ -104,7 +104,7 @@ metadata:
 spec:
   replicas: 2
   image:
-    application:  bargovic/cp-server-connect-repo1:6.2.1.0
+    application:  bargovic/cp-server-connect:6.2.1-1
     init: confluentinc/confluent-init-container:2.0.3
     pullSecretRef:
       - ironbank-registry

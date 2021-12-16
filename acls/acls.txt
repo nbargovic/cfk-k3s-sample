@@ -242,3 +242,11 @@ kafka-acls --bootstrap-server kafka.confluent-ironbank.svc.cluster.local:9071 \
  --add \
  --allow-principal User:clientapp --operation Create --operation Read --operation Write \
  --topic _confluent-metrics
+
+#allow connectors to manipulate topics starting with pg.
+kafka-acls --bootstrap-server kafka.confluent-ironbank.svc.cluster.local:9071 \
+ --command-config /opt/confluentinc/kafka.properties \
+ --add \
+ --allow-principal User:connect --operation Create --operation Read --operation Write \
+ --topic pg. \
+ --resource-pattern-type prefixed
