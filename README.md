@@ -1,4 +1,4 @@
-# cfk-openshift-aws-noble
+# cfk-openshift-aws-sample
 
 NOTE: WORK IN PROGRESS
 
