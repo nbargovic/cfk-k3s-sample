@@ -38,10 +38,12 @@ spec:
     server:
       - "log.retention.hours=72"
       - "confluent.support.metrics.enable=false"
-  authorization:
-    type: simple
-    superUsers:
-      - User:kafka
+  listeners:
+    external:
+      externalAccess:
+        type: loadBalancer
+        loadBalancer:
+          domain: fios-router.home
   dependencies:
     zookeeper:
       endpoint: zookeeper.confluent.svc.cluster.local:2181
