@@ -3,127 +3,118 @@ apiVersion: platform.confluent.io/v1beta1
 kind: KsqlDB
 metadata:
   name: ksqldb
-  namespace: confluent-ironbank
+  namespace: confluent
 spec:
-  replicas: 2
+  replicas: 1
   image:
-    application: bargovic/cp-ksqldb-server-repo1:6.2.1
-    init: confluentinc/confluent-init-container:2.0.3
-    pullSecretRef:
-      - ironbank-registry
+    application: bargovic/cp-ksqldb-server:7.3.1-ubi8-aarch64
+    init: bargovic/confluent-init-container:2.5.1.aarch64
   dataVolumeCapacity: 10Gi
-  tls:
-    secretRef: tls-ksqldb
+  configOverrides:
+    jvm:
+      - "-Xms512M"
+      - "-Xmx512M"
   dependencies:
     kafka:
-      bootstrapEndpoint: kafka.confluent-ironbank.svc.cluster.local:9071
-      authentication:
-        type: mtls
-      tls:
-        enabled: true
+      bootstrapEndpoint: kafka.confluent.svc.cluster.local:9071
     schemaRegistry:
-      url: https://schemaregistry.confluent-ironbank.svc.cluster.local:8081
-      tls:
-        enabled: true
+      url: http://schemaregistry.confluent.svc.cluster.local:8081
+  externalAccess:
+    type: loadBalancer
+    loadBalancer:
+      domain: fios-router.home
   podTemplate:
-    podSecurityContext: { } # Disable the custom pod security context, to use the default
+    resources:
+      limits:
+        memory: 1Gi
+        cpu: 1
+    podSecurityContext:
+      runAsUser: 0
 ---
 apiVersion: platform.confluent.io/v1beta1
 kind: SchemaRegistry
 metadata:
   name: schemaregistry
-  namespace: confluent-ironbank
+  namespace: confluent
 spec:
   replicas: 1
   image:
-    application: bargovic/cp-schema-registry-repo1:6.2.1.0
-    init: confluentinc/confluent-init-container:2.0.3
-    pullSecretRef:
-      - ironbank-registry
-  tls:
-    secretRef: tls-schemaregistry
+    application: bargovic/cp-schema-registry:7.3.1-ubi8-aarch64
+    init: bargovic/confluent-init-container:2.5.1.aarch64
   dependencies:
     kafka:
-      bootstrapEndpoint: kafka.confluent-ironbank.svc.cluster.local:9071
-      authentication:
-        type: mtls
-      tls:
-        enabled: true
+      bootstrapEndpoint: kafka.confluent.svc.cluster.local:9071
   podTemplate:
-    podSecurityContext: { } # Disable the custom pod security context, to use the default
+    resources:
+      limits:
+        memory: 512Mi
+        cpu: 1
+    podSecurityContext:
+      runAsUser: 0
 ---
 apiVersion: platform.confluent.io/v1beta1
 kind: ControlCenter
 metadata:
   name: controlcenter
-  namespace: confluent-ironbank
+  namespace: confluent
 spec:
   replicas: 1
   image:
-    application: bargovic/cp-enterprise-control-center-repo1:6.2.1.0
-    init: confluentinc/confluent-init-container:2.0.3
-    pullSecretRef:
-      - ironbank-registry
-  dataVolumeCapacity: 10Gi
-  authentication:
-    type: basic
-    basic:
-      roles:
-        - Administrators
-        - Restricted
-      restrictedRoles:
-        - Restricted
-      secretRef: basicsecret
-  tls:
-    secretRef: tls-controlcenter
+    application: bargovic/cp-enterprise-control-center:7.3.1-ubi8-aarch64
+    init: bargovic/confluent-init-container:2.5.1.aarch64
+  dataVolumeCapacity: 15Gi
+  storageClass:
+    name: local-path
   dependencies:
     kafka:
-      bootstrapEndpoint: kafka.confluent-ironbank.svc.cluster.local:9071
-      authentication:
-        type: mtls
-      tls:
-        enabled: true
+      bootstrapEndpoint: kafka.confluent.svc.cluster.local:9071
     schemaRegistry:
-      url: https://schemaregistry.confluent-ironbank.svc.cluster.local:8081
-      tls:
-        enabled: true
+      url: http://schemaregistry.confluent.svc.cluster.local:8081
     ksqldb:
     - name: ksql
-      url: https://ksqldb.confluent-ironbank.svc.cluster.local:8088
-      tls:
-        enabled: true
+      url: http://ksqldb.confluent.svc.cluster.local:8088
     connect:
     - name: connect-dev
-      url:  https://connect.confluent-ironbank.svc.cluster.local:8083
-      tls:
-        enabled: true
+      url:  http://connect.confluent.svc.cluster.local:8083
+  externalAccess:
+    type: loadBalancer
+    loadBalancer:
+      domain: fios-router.home
   podTemplate:
-    podSecurityContext: { } # Disable the custom pod security context, to use the default
+    tolerations:
+      - key: "allowOnMaster"
+        operator: "Exists"
+        effect: "NoSchedule"
+    resources:
+      limits:
+        memory: 2.5Gi
+        cpu: 2
+    podSecurityContext:
+      runAsUser: 0
 ---
 apiVersion: platform.confluent.io/v1beta1
 kind: Connect
 metadata:
   name: connect
-  namespace: confluent-ironbank
+  namespace: confluent
 spec:
-  replicas: 2
+  replicas: 1
   image:
-    application:  bargovic/cp-server-connect:6.2.1-1
-    init: confluentinc/confluent-init-container:2.0.3
-    pullSecretRef:
-      - ironbank-registry
-  tls:
-    secretRef: tls-connect
+    application:  bargovic/cp-server-connect:7.3.1-ubi8-aarch64
+    init: bargovic/confluent-init-container:2.5.1.aarch64
   dependencies:
     kafka:
-      bootstrapEndpoint: kafka.confluent-ironbank.svc.cluster.local:9071
-      authentication:
-        type: mtls
-      tls:
-        enabled: true
+      bootstrapEndpoint: kafka.confluent.svc.cluster.local:9071
     schemaRegistry:
-      url: https://schemaregistry.confluent-ironbank.svc.cluster.local:8081
-      tls:
-        enabled: true
+      url: http://schemaregistry.confluent.svc.cluster.local:8081
+  externalAccess:
+    type: loadBalancer
+    loadBalancer:
+      domain: fios-router.home
   podTemplate:
-    podSecurityContext: { } # Disable the custom pod security context, to use the default
+    resources:
+      limits:
+        memory: 1.5Gi
+        cpu: 1
+    podSecurityContext:
+      runAsUser: 0
