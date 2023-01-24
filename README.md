@@ -1,11 +1,12 @@
-# cfk-openshift-aws-sample
+# cfk-k3s-sample
 
-NOTE: WORK IN PROGRESS
+This is a set of sample development scripts to install Confluent Platform on Rancher K3s.
 
-This is a set of development environment scripts to build Confluent Platform on OpenShift.
+CP 7.3.1 and CFK 2.5.1 are Containers available here: https://hub.docker.com/u/bargovic[https://hub.docker.com/u/bargovic]
 
-0. Create certs and secrets using ```mtls/cert-secrets.txt```
+0. Install CFK using helm bundle: https://docs.confluent.io/operator/current/co-deploy-cfk.html#deploy-co-using-the-download-bundle[Instructions here]
 1. Start the brokers with ```kubectl apply -f brokers.yaml```
-2. Setup the ACLs by logging into a kakfa broker pod, and copy paste the scripts from ```acls/acls.txt```
-3. Start the CP services with ```kubectl apply -f services.yaml```
-4. Start Rest Proxy with ```kubectl apply -f restproxy.yaml```
+2. Start the other services with ```kubectl apply -f services.yaml```
+
+TODO:
+- setup RBAC and security.

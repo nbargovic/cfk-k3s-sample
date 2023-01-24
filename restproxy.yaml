@@ -2,33 +2,32 @@ apiVersion: platform.confluent.io/v1beta1
 kind: KafkaRestProxy
 metadata:
   name: kafkarestproxy
-  namespace: confluent-ironbank
+  namespace: confluent
 spec:
-  replicas: 2
+  replicas: 1
   image:
-    application: bargovic/cp-kafka-rest-repo1:6.2.1
-    init: confluentinc/confluent-init-container:2.0.3
-    pullSecretRef:
-      - ironbank-registry
-  authentication:
-    type: mtls
-  tls:
-    secretRef: tls-restproxy
+    application: bargovic/cp-kafka-rest:7.3.1-ubi8-aarch64
+    init: bargovic/confluent-init-container:2.5.1.aarch64
   dependencies:
     schemaRegistry:
-      url: https://schemaregistry.confluent-ironbank.svc.cluster.local:8081
-      tls:
-        enabled: true
+      url: http://schemaregistry.confluent.svc.cluster.local:8081
     kafka:
-      bootstrapEndpoint: kafka.confluent-ironbank.svc.cluster.local:9071
-      authentication:
-        type: mtls
-      tls:
-        enabled: true
+      bootstrapEndpoint: kafka.confluent.svc.cluster.local:9071
   configOverrides:
     server:
       # enable mtls to mtls principal propagation
-      - "confluent.rest.auth.propagate.method=SSL"
-      - "kafka.rest.resource.extension.class=io.confluent.kafkarest.security.KafkaRestSecurityResourceExtension"
+      #- "confluent.rest.auth.propagate.method=SSL"
+      #- "kafka.rest.resource.extension.class=io.confluent.kafkarest.security.KafkaRestSecurityResourceExtension"
+  listeners:
+    external:
+      externalAccess:
+        type: loadBalancer
+        loadBalancer:
+          domain: fios-router.home
   podTemplate:
-    podSecurityContext: { } # Disable the custom pod security context, to use the default
+    resources:
+      limits:
+      memory: 512Mi
+      cpu: 1
+    podSecurityContext:
+     runAsUser: 0

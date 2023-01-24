@@ -2,80 +2,57 @@ apiVersion: platform.confluent.io/v1beta1
 kind: Zookeeper
 metadata:
   name: zookeeper
-  namespace: confluent-ironbank
+  namespace: confluent
 spec:
   replicas: 3
   image:
-    application: bargovic/cp-zookeeper-repo1:6.2.1
-    init: confluentinc/confluent-init-container:2.0.3
-    #init: registry1.dso.mil/ironbank/confluentinc/confluent-init-container:2.0.3
-    pullSecretRef:
-      - ironbank-registry
+    application: bargovic/cp-zookeeper:7.3.1-ubi8-aarch64
+    init: bargovic/confluent-init-container:2.5.1.aarch64
   dataVolumeCapacity: 10Gi
-  logVolumeCapacity: 10Gi
+  logVolumeCapacity: 5Gi
   configOverrides:
     jvm:
       - "-Dcom.sun.management.jmxremote=false"
-    log4j:
-      - "log4j.appender.stdout.filter.01=org.apache.log4j.varia.StringMatchFilter"
-      - "log4j.appender.stdout.filter.01.StringToMatch=Unable to read additional data from client sessionid 0x0"
-      - "log4j.appender.stdout.filter.01.AcceptOnMatch=false"
-  authentication:
-    type: mtls
-    principalMappingRules:
-      - RULE:^CN=([a-zA-Z0-9]*).*$/$1/
-  tls:
-    secretRef: tls-zookeeper
   podTemplate:
-    podSecurityContext: { } # Disable the custom pod security context, to use the default
+    resources:
+      limits:
+        memory: 512Mi
+        cpu: 500m
+    podSecurityContext:
+      runAsUser: 0
+  license:
+    globalLicense: true
 ---
 apiVersion: platform.confluent.io/v1beta1
 kind: Kafka
 metadata:
   name: kafka
-  namespace: confluent-ironbank
+  namespace: confluent
 spec:
   replicas: 3
   image:
-    application: bargovic/cp-server-repo1:6.2.1
-    init: confluentinc/confluent-init-container:2.0.3
-    #init: registry1.dso.mil/ironbank/confluentinc/confluent-init-container:2.0.3
-    pullSecretRef:
-      - ironbank-registry
+    application: bargovic/cp-server:7.3.1-ubi8-aarch64
+    init: bargovic/confluent-init-container:2.5.1.aarch64
   dataVolumeCapacity: 25Gi
   configOverrides:
     server:
       - "log.retention.hours=72"
-      # - "allow.everyone.if.no.acl.found=true"
-  tls:
-    secretRef: tls-kafka
+      - "confluent.support.metrics.enable=false"
   listeners:
-    internal:
-      authentication:
-        type: mtls
-        principalMappingRules:
-          - RULE:^CN=([a-zA-Z0-9]*).*$/$1/
-      tls:
-        enabled: true
     external:
-      authentication:
-        type: mtls
-        principalMappingRules:
-          - RULE:^CN=([a-zA-Z0-9]*).*$/$1/
-      tls:
-        enabled: true
-  authorization:
-    type: simple
-    superUsers:
-      - User:kafka
-      - User:controlcenter
+      externalAccess:
+        type: loadBalancer
+        loadBalancer:
+          domain: fios-router.home
   dependencies:
     zookeeper:
-      endpoint: zookeeper.confluent-ironbank.svc.cluster.local:2182
-      authentication:
-        type: mtls
-      tls:
-        enabled: true
+      endpoint: zookeeper.confluent.svc.cluster.local:2181
   podTemplate:
-    podSecurityContext: { } # Disable the custom pod security context, to use the default
-
+    resources:
+      limits:
+        memory: 2Gi
+        cpu: 1500m
+    podSecurityContext:
+      runAsUser: 0
+  license:
+    globalLicense: true
