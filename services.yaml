@@ -10,10 +10,6 @@ spec:
     application: bargovic/cp-ksqldb-server:7.3.1-ubi8-aarch64
     init: bargovic/confluent-init-container:2.5.1.aarch64
   dataVolumeCapacity: 10Gi
-  configOverrides:
-    jvm:
-      - "-Xms512M"
-      - "-Xmx512M"
   dependencies:
     kafka:
       bootstrapEndpoint: kafka.confluent.svc.cluster.local:9071
@@ -24,10 +20,15 @@ spec:
     loadBalancer:
       domain: fios-router.home
   podTemplate:
+    probe:
+      readiness:
+        initialDelaySeconds: 180
+      liveness:
+        initialDelaySeconds: 180
     resources:
       limits:
         memory: 1Gi
-        cpu: 1
+        cpu: 2
     podSecurityContext:
       runAsUser: 0
 ---
@@ -45,6 +46,10 @@ spec:
     kafka:
       bootstrapEndpoint: kafka.confluent.svc.cluster.local:9071
   podTemplate:
+    tolerations:
+      - key: "allowOnMaster"
+        operator: "Exists"
+        effect: "NoSchedule"
     resources:
       limits:
         memory: 512Mi
@@ -89,6 +94,11 @@ spec:
       limits:
         memory: 2.5Gi
         cpu: 2
+    probe:
+      readiness:
+        initialDelaySeconds: 180
+      liveness:
+        initialDelaySeconds: 180
     podSecurityContext:
       runAsUser: 0
 ---
@@ -115,6 +125,11 @@ spec:
     resources:
       limits:
         memory: 1.5Gi
-        cpu: 1
+        cpu: 2
+    probe:
+      readiness:
+        initialDelaySeconds: 360
+      liveness:
+        initialDelaySeconds: 360
     podSecurityContext:
       runAsUser: 0

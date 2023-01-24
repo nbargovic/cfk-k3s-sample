@@ -50,7 +50,7 @@ spec:
   podTemplate:
     resources:
       limits:
-        memory: 1.75Gi
+        memory: 2Gi
         cpu: 1500m
     podSecurityContext:
       runAsUser: 0
