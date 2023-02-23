@@ -1,0 +1,29 @@
+apiVersion: platform.confluent.io/v1beta1
+kind: SchemaRegistry
+metadata:
+  name: schemaregistry
+  namespace: confluent
+spec:
+  replicas: 1
+  image:
+    application: registry1.dso.mil/ironbank/confluentinc/cp-schema-registry:7.3.1-1-ubi8
+    init: registry1.dso.mil/ironbank/confluentinc/confluent-init-container:2.5.1
+    pullSecretRef:
+      - registry-secret
+  tls:
+    secretRef: tls-schemaregistry
+  externalAccess:
+    type: route
+    route:
+      domain: apps.nbargovic-fips.pks4.p1.openshiftapps.com
+  dependencies:
+    kafka:
+      bootstrapEndpoint: kafka.confluent.svc.cluster.local:9071
+      authentication:
+        type: mtls
+      tls:
+        enabled: true
+  podTemplate:
+    podSecurityContext: {}
+  license:
+    globalLicense: true

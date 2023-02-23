@@ -1,0 +1,9 @@
+
+kafka-topics --list --bootstrap-server kafka.apps.nbargovic-fips.pks4.p1.openshiftapps.com:443 --command-config ../sample-client/client.properties
+
+keytool -list -keystore ./generated/keystore.bcfks \
+    -storepass password -v \
+    -keypass password \
+    -storetype BCFKS \
+    -providerclass org.bouncycastle.jcajce.provider.BouncyCastleFipsProvider \
+    -providerpath ./bc-fips/bc-fips-1.0.2.3.jar
