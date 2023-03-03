@@ -2,8 +2,8 @@
   "CN": "clientapp",
   "hosts": [
     "clientapp",
-    "clientapp.confluent-ironbank.svc.cluster.local",
-    "*.clientapp.confluent-ironbank.svc.cluster.local"
+    "clientapp.confluent.svc.cluster.local",
+    "*.clientapp.confluent.svc.cluster.local"
   ],
   "key": {
     "algo": "rsa",

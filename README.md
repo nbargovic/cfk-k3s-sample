@@ -1,12 +1,10 @@
 # cfk-k3s-sample
 
-This is a set of sample development scripts to install Confluent Platform on Rancher K3s.
-
-CP 7.3.1 and CFK 2.5.1 are Containers available here: [https://hub.docker.com/u/bargovic](https://hub.docker.com/u/bargovic)
+This branch is a set of sample development scripts to install a FIPS compliant Confluent Platform on OpenShift.
 
 0. Install CFK using helm bundle: [Instructions Here](https://docs.confluent.io/operator/current/co-deploy-cfk.html#deploy-co-using-the-download-bundle)
-1. Start the brokers with ```kubectl apply -f brokers.yaml```
-2. Start the other services with ```kubectl apply -f services.yaml```
+1. Generate BCFKS and JKS keystores/truststores
+2. Create K8s secrets
+3. Start the brokers with ```kubectl apply -f brokers.yaml```
 
-TODO:
-- setup RBAC and security.
+Test functionality with commands in sample-client/test.txt

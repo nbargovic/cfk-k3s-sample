@@ -1,9 +1,9 @@
 {
   "CN": "kafka",
   "hosts": [
-    "kafka",
-    "kafka.confluent-ironbank.svc.cluster.local",
-    "*.kafka.confluent-ironbank.svc.cluster.local"
+    "kafka.confluent.svc.cluster.local",
+    "*.kafka.confluent.svc.cluster.local",
+    "*.apps.nbargovic-fips.pks4.p1.openshiftapps.com"
   ],
   "key": {
     "algo": "rsa",

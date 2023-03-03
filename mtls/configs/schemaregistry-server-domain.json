@@ -1,10 +1,9 @@
 {
-  "CN": "sr",
+  "CN": "schemaregistry",
   "hosts": [
-    "sr",
-    "schemaregistry.confluent-ironbank.svc.cluster.local",
-    "*.schemaregistry.confluent-ironbank.svc.cluster.local"
-
+    "schemaregistry.confluent.svc.cluster.local",
+    "*.schemaregistry.confluent.svc.cluster.local",
+    "*.apps.nbargovic-fips.pks4.p1.openshiftapps.com"
   ],
   "key": {
     "algo": "rsa",

@@ -1,9 +1,9 @@
 {
-  "CN": "ksql",
+  "CN": "ksqldb",
   "hosts": [
-    "ksql",
-    "ksqldb.confluent-ironbank.svc.cluster.local",
-    "*.ksqldb.confluent-ironbank.svc.cluster.local"
+    "ksqldb.confluent.svc.cluster.local",
+    "*.ksqldb.confluent.svc.cluster.local",
+    "*.apps.nbargovic-fips.pks4.p1.openshiftapps.com"
   ],
   "key": {
     "algo": "rsa",

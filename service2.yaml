@@ -6,10 +6,8 @@ metadata:
 spec:
   replicas: 1
   image:
-    application: registry1.dso.mil/ironbank/confluentinc/cp-schema-registry:7.3.1-1-ubi8
-    init: registry1.dso.mil/ironbank/confluentinc/confluent-init-container:2.5.1
-    pullSecretRef:
-      - registry-secret
+    application: confluentinc/cp-schema-registry:7.3.1-1-ubi8
+    init: confluentinc/confluent-init-container:2.5.1
   tls:
     secretRef: tls-schemaregistry
   externalAccess:
@@ -36,10 +34,8 @@ metadata:
 spec:
   replicas: 1
   image:
-    application: registry1.dso.mil/ironbank/confluentinc/cp-server-connect:7.3.1-1-ubi8
-    init: registry1.dso.mil/ironbank/confluentinc/confluent-init-container:2.5.1
-    pullSecretRef:
-      - registry-secret
+    application: confluentinc/cp-server-connect:7.3.1-1-ubi8
+    init: confluentinc/confluent-init-container:2.5.1
   tls:
     secretRef: tls-connect
   externalAccess:

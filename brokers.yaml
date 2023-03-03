@@ -6,20 +6,21 @@ metadata:
 spec:
   replicas: 3
   image:
-    application: bargovic/cp-zookeeper:7.3.1-ubi8-aarch64
-    init: bargovic/confluent-init-container:2.5.1.aarch64
+    application: confluentinc/cp-zookeeper:7.3.1-1-ubi8
+    init: confluentinc/confluent-init-container:2.5.1
   dataVolumeCapacity: 10Gi
   logVolumeCapacity: 5Gi
+  authentication:
+    type: mtls
+    principalMappingRules:
+      - RULE:.*CN[\s]?=[\s]?([a-zA-Z0-9.]*)?.*/$1/
+  tls:
+    secretRef: tls-zookeeper
   configOverrides:
     jvm:
       - "-Dcom.sun.management.jmxremote=false"
   podTemplate:
-    resources:
-      limits:
-        memory: 512Mi
-        cpu: 500m
-    podSecurityContext:
-      runAsUser: 0
+    podSecurityContext: {}
   license:
     globalLicense: true
 ---
@@ -31,28 +32,43 @@ metadata:
 spec:
   replicas: 3
   image:
-    application: bargovic/cp-server:7.3.1-ubi8-aarch64
-    init: bargovic/confluent-init-container:2.5.1.aarch64
+    application: confluentinc/cp-server:7.3.1
+    init: confluentinc/confluent-init-container:2.5.1
   dataVolumeCapacity: 25Gi
   configOverrides:
     server:
-      - "log.retention.hours=72"
       - "confluent.support.metrics.enable=false"
+      - "enable.fips=true"
+      - "ssl.enabled.protocols=TLSv1.2"
+    jvm:
+      - "-Dcom.redhat.fips=true"
+  fips:
+    enabled: true
+  tls:
+    secretRef: fips-tls
   listeners:
+    internal:
+      authentication:
+        type: mtls
+        principalMappingRules:
+          - RULE:.*CN[\s]?=[\s]?([a-zA-Z0-9.]*)?.*/$1/
+      tls:
+        enabled: true
     external:
+      authentication:
+        type: mtls
+        principalMappingRules:
+          - RULE:.*CN[\s]?=[\s]?([a-zA-Z0-9.]*)?.*/$1/
+      tls:
+        enabled: true
       externalAccess:
-        type: loadBalancer
-        loadBalancer:
-          domain: fios-router.home
+        type: route
+        route:
+          domain: apps.nbargovic-fips.pks4.p1.openshiftapps.com
   dependencies:
     zookeeper:
       endpoint: zookeeper.confluent.svc.cluster.local:2181
   podTemplate:
-    resources:
-      limits:
-        memory: 2Gi
-        cpu: 1500m
-    podSecurityContext:
-      runAsUser: 0
+    podSecurityContext: {}
   license:
     globalLicense: true

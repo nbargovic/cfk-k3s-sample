@@ -1,10 +1,9 @@
 {
-  "CN": "restproxy",
+  "CN": "kafkarestproxy",
   "hosts": [
-    "restproxy",
-    "restproxy.confluent-ironbank.svc.cluster.local",
-    "*.restproxy.confluent-ironbank.svc.cluster.local"
-
+    "kafkarestproxy.confluent.svc.cluster.local",
+    "*.kafkarestproxy.confluent.svc.cluster.local",
+    "*.apps.nbargovic-fips.pks4.p1.openshiftapps.com"
   ],
   "key": {
     "algo": "rsa",
