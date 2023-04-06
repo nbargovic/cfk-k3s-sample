@@ -1,9 +1,10 @@
 {
-  "CN": "controlcenter",
+  "CN": "c3",
   "hosts": [
-    "controlcenter",
-    "controlcenter.confluent-ironbank.svc.cluster.local",
-    "*.controlcenter.confluent-ironbank.svc.cluster.local"
+    "c3",
+    "controlcenter.confluent.svc.cluster.local",
+    "*.controlcenter.confluent.svc.cluster.local",
+    "*.fios-router.home"
   ],
   "key": {
     "algo": "rsa",
@@ -11,9 +12,9 @@
   },
   "names": [
     {
-      "C": "US",
-      "ST": "CA",
-      "L": "MountainView"
+      "C": "Universe",
+      "ST": "Pangea",
+      "L": "Earth"
     }
   ]
 }

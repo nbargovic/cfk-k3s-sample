@@ -7,7 +7,7 @@ CP 7.3.1 and CFK 2.5.1 Containers available here: [https://hub.docker.com/u/barg
 0. Install CFK using helm bundle: [Instructions Here](https://docs.confluent.io/operator/current/co-deploy-cfk.html#deploy-co-using-the-download-bundle)
 1. Start the brokers with ```kubectl apply -f brokers.yaml```
 2. Start the other services with ```kubectl apply -f services.yaml```
-3. Start LDAP with ```kubectl apply -f ldap.yaml```
+3. Start LDAP with ```helm upgrade --install -f ./openldap/ldaps-rbac.yaml openldap ./openldap --namespace ldap```
 
 TODO:
 - setup RBAC and security.
