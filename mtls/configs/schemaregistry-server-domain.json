@@ -2,9 +2,9 @@
   "CN": "sr",
   "hosts": [
     "sr",
-    "schemaregistry.confluent-ironbank.svc.cluster.local",
-    "*.schemaregistry.confluent-ironbank.svc.cluster.local"
-
+    "schemaregistry.confluent.svc.cluster.local",
+    "*.schemaregistry.confluent.svc.cluster.local",
+    "*.fios-router.home"
   ],
   "key": {
     "algo": "rsa",
@@ -12,9 +12,9 @@
   },
   "names": [
     {
-      "C": "US",
-      "ST": "CA",
-      "L": "MountainView"
+      "C": "Universe",
+      "ST": "Pangea",
+      "L": "Earth"
     }
   ]
 }

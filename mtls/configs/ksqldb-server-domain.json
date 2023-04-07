@@ -2,8 +2,9 @@
   "CN": "ksql",
   "hosts": [
     "ksql",
-    "ksqldb.confluent-ironbank.svc.cluster.local",
-    "*.ksqldb.confluent-ironbank.svc.cluster.local"
+    "ksqldb.confluent.svc.cluster.local",
+    "*.ksqldb.confluent.svc.cluster.local",
+    "*.fios-router.home"
   ],
   "key": {
     "algo": "rsa",
@@ -11,9 +12,9 @@
   },
   "names": [
     {
-      "C": "US",
-      "ST": "CA",
-      "L": "MountainView"
+      "C": "Universe",
+      "ST": "Pangea",
+      "L": "Earth"
     }
   ]
 }

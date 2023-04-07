@@ -1,9 +1,9 @@
 {
-  "CN": "connect",
+  "CN": "krp",
   "hosts": [
-    "connect",
-    "connect.confluent.svc.cluster.local",
-    "*.connect.confluent.svc.cluster.local",
+    "krp",
+    "kafkarestproxy.confluent.svc.cluster.local",
+    "*.kafkarestproxy.confluent.svc.cluster.local",
     "*.fios-router.home"
   ],
   "key": {
