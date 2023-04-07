@@ -3,7 +3,8 @@
   "hosts": [
     "zookeeper",
     "zookeeper.confluent.svc.cluster.local",
-    "*.zookeeper.confluent.svc.cluster.local"
+    "*.zookeeper.confluent.svc.cluster.local",
+    "*-internal.confluent.svc.cluster.local"
   ],
   "key": {
     "algo": "rsa",
