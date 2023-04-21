@@ -9,5 +9,5 @@ CP 7.3.1 and CFK 2.5.1 Containers available here: [https://hub.docker.com/u/barg
 3. Create the Certs and Secrets with the commands in ```./mtls/create-certs-and-secrets.txt```
 4. Start the brokers with ```kubectl apply -f brokers.yaml -n confluent```
 5. Start the other services with ```kubectl apply -f services.yaml -n confluent```
-6. Add rolebidings  ```kubectl apply -f rolebindings.yaml -n confluent```
+6. Add role bindings  ```kubectl apply -f rolebindings.yaml -n confluent```
 

@@ -1,6 +1,6 @@
 OpenLdap Helm charts based on the osixia/openldap
 
 {{- if .Values.tls.enabled }}
-TLS Address: ldaps://{{ .Values.name }}.{{ .Release.Namespace }}.svc.cluster.local:636
+TLS Address: ldaps://{{ .Values.name }}.{{ .Release.Namespace }}.svc.cluster.local:9636
 {{- end }}
-Address: ldap://{{ .Values.name}}.{{ .Release.Namespace }}.svc.cluster.local:389
+Address: ldap://{{ .Values.name}}.{{ .Release.Namespace }}.svc.cluster.local:9389

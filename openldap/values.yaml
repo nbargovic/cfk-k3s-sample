@@ -15,6 +15,8 @@ env:
   LDAP_READONLY_USER_USERNAME: "mds"
   LDAP_READONLY_USER_PASSWORD: "Developer!"
   LDAP_BASE_DN: "dc=test,dc=com"
+  LDAP_PORT: "9389"
+  LDAPS_PORT: "9636"
 
 # Adding integer before ldif name to allow sequence order.
 ldifs:
