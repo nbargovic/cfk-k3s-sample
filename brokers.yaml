@@ -40,12 +40,22 @@ spec:
     application: bargovic/cp-server:7.3.1-ubi8-aarch64
     init: bargovic/confluent-init-container:2.5.1.aarch64
   dataVolumeCapacity: 25Gi
+  mountedSecrets:
+    - secretRef: aws-secret
   metricReporter:
     enabled: false
   configOverrides:
     server:
       - "log.retention.hours=72"
+      - "log.roll.hours=71"
+      - "log.segment.bytes=209715200"
       - "confluent.support.metrics.enable=false"
+      - "confluent.tier.feature=true"
+      - "confluent.tier.enable=true"
+      - "confluent.tier.backend=S3"
+      - "confluent.tier.s3.bucket=nbargovic-tiered-storage-os"
+      - "confluent.tier.s3.region=us-east-1"
+      - "confluent.tier.s3.cred.file.path=/mnt/secrets/aws-secret/aws-creds"
   tls:
     secretRef: tls-kafka
   listeners:
