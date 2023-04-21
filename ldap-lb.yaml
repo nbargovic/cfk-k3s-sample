@@ -1,0 +1,18 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: ldap-lb
+  namespace: ldap
+spec:
+  type: LoadBalancer
+  ports:
+    - protocol: TCP
+      name: ldap
+      port: 9389
+      targetPort: 9389
+    - protocol: TCP
+      name: ldapssl
+      port: 9636
+      targetPort: 9636
+  selector:
+    app: ldap
