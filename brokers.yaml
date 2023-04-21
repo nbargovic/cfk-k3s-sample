@@ -40,6 +40,8 @@ spec:
     application: bargovic/cp-server:7.3.1-ubi8-aarch64
     init: bargovic/confluent-init-container:2.5.1.aarch64
   dataVolumeCapacity: 25Gi
+  metricReporter:
+    enabled: false
   configOverrides:
     server:
       - "log.retention.hours=72"
