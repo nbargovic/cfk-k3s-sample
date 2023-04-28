@@ -7,8 +7,8 @@ This is a set of sample development scripts to install Confluent Platform on Ran
 * Authentication via LDAP - [docs here](https://docs.confluent.io/operator/current/co-authenticate.html#sasl-plain-with-ldap-authentication)
 * Authorization via RBAC - [docs here](https://docs.confluent.io/operator/current/co-rbac.html)
 * RestProxy with RBAC Security - [docs here](https://docs.confluent.io/platform/current/kafka-rest/production-deployment/rest-proxy/security.html#role-based-access-control-rbac)
-* Tiered Storage (AWS S3) enabled
-* Health+ Enabled
+* Tiered Storage (AWS S3) enabled - [docs here](https://docs.confluent.io/operator/current/co-storage.html#tiered)
+* Health+ Enabled - [docs here](https://docs.confluent.io/operator/current/co-monitor-cp.html#confluent-health)
 
 Deployment Steps
 
