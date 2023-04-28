@@ -97,16 +97,16 @@ spec:
               secretRef: credential
           configurations:
             groupNameAttribute: cn
-            groupObjectClass: group
-            groupMemberAttribute: member
-            groupMemberAttributePattern: CN=(.*),DC=test,DC=com
+            groupObjectClass: posixGroup
+            groupMemberAttribute: memberUid
+            groupMemberAttributePattern: cn=(.*),ou=users,dc=test,dc=com
             groupSearchBase: dc=test,dc=com
-            groupSearchScope: 1
+            groupSearchScope: 2
             userNameAttribute: cn
-            userMemberOfAttributePattern: CN=(.*),DC=test,DC=com
-            userObjectClass: organizationalRole
+            userMemberOfAttributePattern: cn=(.*),dc=test,dc=com
+            userObjectClass: simpleSecurityObject
             userSearchBase: dc=test,dc=com
-            userSearchScope: 1
+            userSearchScope: 2
   dependencies:
     kafkaRest:
       authentication:

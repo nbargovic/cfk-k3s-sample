@@ -1,0 +1,48 @@
+apiVersion: platform.confluent.io/v1beta1
+kind: KafkaRestProxy
+metadata:
+  name: kafkarestproxy
+  namespace: confluent
+spec:
+  replicas: 1
+  image:
+    application: bargovic/cp-kafka-rest:7.3.1-ubi8-aarch64
+    init: bargovic/confluent-init-container:2.5.1.aarch64
+  tls:
+    secretRef: tls-kafkarestproxy
+  authorization:
+    type: rbac
+  externalAccess:
+    type: loadBalancer
+    loadBalancer:
+      domain: fios-router.home
+  dependencies:
+    kafka:
+      bootstrapEndpoint: kafka.confluent.svc.cluster.local:9071
+      authentication:
+        type: mtls
+      tls:
+        enabled: true
+    mds:
+      endpoint: https://kafka.confluent.svc.cluster.local:8090
+      tokenKeyPair:
+        secretRef: mds-token
+      authentication:
+        type: bearer
+        bearer:
+          secretRef: kafkarestproxy-mds-client
+      tls:
+        enabled: true
+    schemaRegistry:
+      url: https://schemaregistry.confluent.svc.cluster.local:8081
+      tls:
+        enabled: true
+  podTemplate:
+    resources:
+      limits:
+        memory: 1Gi
+        cpu: 1
+    podSecurityContext:
+      runAsUser: 0
+  license:
+    globalLicense: true

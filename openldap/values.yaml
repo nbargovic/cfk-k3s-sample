@@ -107,7 +107,7 @@ ldifs:
     dn: cn=alice,ou=users,{{ LDAP_BASE_DN }}
     objectClass: inetOrgPerson
     objectClass: posixAccount
-    objectClass: shadowAccount
+    objectClass: simpleSecurityObject
     uid: alice
     sn: LookingGlass
     givenName: Alice
@@ -123,7 +123,7 @@ ldifs:
     dn: cn=james,ou=users,{{ LDAP_BASE_DN }}
     objectClass: inetOrgPerson
     objectClass: posixAccount
-    objectClass: shadowAccount
+    objectClass: simpleSecurityObject
     uid: james
     sn: LookingGlass
     givenName: James

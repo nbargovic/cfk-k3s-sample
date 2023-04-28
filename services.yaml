@@ -80,13 +80,9 @@ spec:
       tls:
         enabled: true
   podTemplate:
-    tolerations:
-      - key: "allowOnMaster"
-        operator: "Exists"
-        effect: "NoSchedule"
     resources:
       limits:
-        memory: 512Mi
+        memory: 1Gi
         cpu: 1
     podSecurityContext:
       runAsUser: 0
@@ -147,10 +143,6 @@ spec:
     loadBalancer:
       domain: fios-router.home
   podTemplate:
-    tolerations:
-      - key: "allowOnMaster"
-        operator: "Exists"
-        effect: "NoSchedule"
     resources:
       limits:
         memory: 2Gi
