@@ -43,7 +43,7 @@ spec:
         initialDelaySeconds: 180
     resources:
       limits:
-        memory: 1Gi
+        memory: 1.5Gi
         cpu: 2
     podSecurityContext:
       runAsUser: 0

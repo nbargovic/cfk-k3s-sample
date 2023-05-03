@@ -68,3 +68,39 @@ spec:
   ## if use other kafkaRestClass except for default, need to configure accordingly
   #kafkaRestClassRef:
   # name: default
+---
+apiVersion: platform.confluent.io/v1beta1
+kind: ConfluentRolebinding
+metadata:
+  name: ksql-rb-cluster
+  namespace: confluent
+spec:
+  principal:
+    type: user
+    name: ksql
+  role: ClusterAdmin
+---
+# rolebindings for ksql migrations example
+apiVersion: platform.confluent.io/v1beta1
+kind: ConfluentRolebinding
+metadata:
+  name: ksql-migrations-rb-ksql
+  namespace: confluent
+spec:
+  principal:
+    type: user
+    name: ksql
+  role: ResourceOwner
+  resourcePatterns:
+    - name: confluent.ksqldb_ksql_MIGRATION
+      patternType: PREFIXED
+      resourceType: Topic
+    - name: ksql-service-idksql_MIGRATION
+      patternType: PREFIXED
+      resourceType: Topic
+    - name: _confluent-ksql-confluent.ksqldb_
+      patternType: PREFIXED
+      resourceType: Topic
+    - name: order
+      patternType: PREFIXED
+      resourceType: Topic
