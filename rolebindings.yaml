@@ -95,9 +95,6 @@ spec:
     - name: confluent.ksqldb_ksql_MIGRATION
       patternType: PREFIXED
       resourceType: Topic
-    - name: ksql-service-idksql_MIGRATION
-      patternType: PREFIXED
-      resourceType: Topic
     - name: _confluent-ksql-confluent.ksqldb_
       patternType: PREFIXED
       resourceType: Topic
