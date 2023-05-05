@@ -4,7 +4,8 @@ CREATE OR REPLACE STREAM ORDER_EVENTS (
   items ARRAY<STRING>,
   cost DECIMAL(6, 2),
   ordertime TIMESTAMP,
-  description STRING
+  description STRING,
+  woof STRING
 ) WITH (
   kafka_topic='order_event',
   partitions=1,
