@@ -164,6 +164,10 @@ spec:
         initialDelaySeconds: 180
     podSecurityContext:
       runAsUser: 0
+    tolerations:
+      - key: "allowOnMaster"
+        operator: "Exists"
+        effect: "NoSchedule"
 ---
 apiVersion: platform.confluent.io/v1beta1
 kind: Connect

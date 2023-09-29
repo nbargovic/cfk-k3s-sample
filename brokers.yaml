@@ -26,6 +26,15 @@ spec:
         cpu: 500m
     podSecurityContext:
       runAsUser: 0
+    labels:
+      pod-group: zookeeper
+    topologySpreadConstraints:
+      - maxSkew: 1
+        topologyKey: "kubernetes.io/hostname"
+        whenUnsatisfiable: DoNotSchedule
+        labelSelector:
+          matchLabels:
+            app: zookeeper
   license:
     globalLicense: true
 ---
@@ -128,6 +137,15 @@ spec:
         cpu: 1500m
     podSecurityContext:
       runAsUser: 0
+    labels:
+      pod-group: kafka
+    topologySpreadConstraints:
+      - maxSkew: 1
+        topologyKey: "kubernetes.io/hostname"
+        whenUnsatisfiable: DoNotSchedule
+        labelSelector:
+          matchLabels:
+            app: kafka
   license:
     globalLicense: true
 ---

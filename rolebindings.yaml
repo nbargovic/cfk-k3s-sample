@@ -101,3 +101,15 @@ spec:
     - name: order
       patternType: PREFIXED
       resourceType: Topic
+---
+# rolebinding `testadmin-rb` allows `testadmin` to see kafkaCluster
+apiVersion: platform.confluent.io/v1beta1
+kind: ConfluentRolebinding
+metadata:
+  name: testadmin-rb
+  namespace: confluent
+spec:
+  principal:
+    type: user
+    name: testadmin
+  role: ClusterAdmin
