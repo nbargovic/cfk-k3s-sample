@@ -1,0 +1,31 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: schema-sample-config
+  namespace: confluent
+data:
+  schema: |
+    {
+      "name": "topic-schema-cfk-value",
+      "type": "object",
+      "additionalProperties": false,
+      "description": "Sample schema to help you get started.",
+      "properties": {
+        "count": {
+          "description": "The number type is used for any numeric type, either integers or floating point numbers.",
+          "type": "number"
+        },
+        "description": {
+          "description": "The string type is used for strings of text.",
+          "type": "string"
+        },
+        "id": {
+          "description": "The integer type is used for integral numbers.",
+          "type": "integer"
+        },
+        "update": {
+          "description": "The integer type is used for integral numbers.",
+          "type": "string"
+        }
+      }
+    }

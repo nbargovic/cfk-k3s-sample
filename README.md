@@ -10,6 +10,7 @@ This is a set of sample development scripts to install Confluent Platform on Ran
 * Tiered Storage (AWS S3) enabled - [docs here](https://docs.confluent.io/operator/current/co-storage.html#tiered)
 * Health+ Enabled - [docs here](https://docs.confluent.io/operator/current/co-monitor-cp.html#confluent-health)
 * KSQL Migrations - [examples here](https://github.com/nbargovic/cfk-k3s-sample/tree/main/ksql-migrations)
+* Manage Schemas with CFK - [examples here](https://github.com/nbargovic/cfk-k3s-sample/tree/main/schemas)
 
 Deployment Steps
 

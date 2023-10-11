@@ -1,7 +1,7 @@
 {
-  "CN": "sr",
+  "CN": "schemaregistry",
   "hosts": [
-    "sr",
+    "schemaregistry",
     "schemaregistry.confluent.svc.cluster.local",
     "*.schemaregistry.confluent.svc.cluster.local",
     "*.fios-router.home"

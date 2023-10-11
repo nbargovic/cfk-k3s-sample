@@ -87,6 +87,10 @@ spec:
           secretRef: sr-mds-client
       tls:
         enabled: true
+  externalAccess:
+    type: loadBalancer
+    loadBalancer:
+      domain: fios-router.home
   podTemplate:
     resources:
       limits:
@@ -138,11 +142,11 @@ spec:
       url: https://schemaregistry.confluent.svc.cluster.local:8081
       tls:
         enabled: true
-    ksqldb:
-    - name: ksql
-      url: https://ksqldb.confluent.svc.cluster.local:8088
-      tls:
-        enabled: true
+    #ksqldb:
+    #- name: ksql
+    #  url: https://ksqldb.confluent.svc.cluster.local:8088
+    #  tls:
+    #    enabled: true
     connect:
     - name: connect-dev
       url:  https://connect.confluent.svc.cluster.local:8083
@@ -177,7 +181,7 @@ metadata:
 spec:
   replicas: 1
   image:
-    application: bargovic/cp-server-connect:7.3.1-12-ubi8-aarch64
+    application: bargovic/cp-server-connect:7.3.1-18git st-ubi8-aarch64
     init: bargovic/confluent-init-container:2.5.1.aarch64
   tls:
     secretRef: tls-connect

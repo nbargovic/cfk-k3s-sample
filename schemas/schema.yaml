@@ -1,0 +1,10 @@
+apiVersion: platform.confluent.io/v1beta1
+kind: Schema
+metadata:
+  name: topic-schema-cfk-value
+  namespace: confluent
+spec:
+  name: topic-schema-cfk-value
+  data:
+    configRef: schema-sample-config
+    format: json

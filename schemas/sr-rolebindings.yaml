@@ -1,0 +1,20 @@
+---
+# rolebinding `internal-schemaregistry-schema-validation` allows `sr` to see schemaregistry information
+# `schemaRegistryClusterId` pattern: `id_<schemaregistry.name>_<namespace>`
+apiVersion: platform.confluent.io/v1beta1
+kind: ConfluentRolebinding
+metadata:
+  name: internal-schemaregistry-schema-validation
+  namespace: confluent
+spec:
+  principal:
+    name: sr
+    type: user
+  clustersScopeByIds:
+    schemaRegistryClusterId: id_schemaregistry_confluent
+    kafkaClusterId: fri9JRPLToqOmygWqcOMPA
+  resourcePatterns:
+    - name: "*"
+      patternType: LITERAL
+      resourceType: Subject
+  role: DeveloperRead
