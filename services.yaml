@@ -181,7 +181,7 @@ metadata:
 spec:
   replicas: 1
   image:
-    application: bargovic/cp-server-connect:7.3.1-18git st-ubi8-aarch64
+    application: bargovic/cp-server-connect:7.3.1-18-ubi8-aarch64
     init: bargovic/confluent-init-container:2.5.1.aarch64
   tls:
     secretRef: tls-connect
