@@ -1,5 +1,5 @@
 # cfk-k3s-sample
-CP 7.3 and CFK 2.5 **aarch64** images available here: [https://hub.docker.com/u/bargovic](https://hub.docker.com/u/bargovic)
+CP 7.5 and CFK 2.7 **aarch64** images available here: [https://hub.docker.com/u/bargovic](https://hub.docker.com/u/bargovic)
 
 This is a set of sample development scripts to install Confluent Platform on Rancher K3s.
 

@@ -7,8 +7,8 @@ metadata:
 spec:
   replicas: 1
   image:
-    application: bargovic/cp-ksqldb-server:7.3.1-ubi8-aarch64
-    init: bargovic/confluent-init-container:2.5.1.aarch64
+    application: bargovic/cp-ksqldb-server:7.5.1-ubi8-aarch64
+    init: confluentinc/confluent-init-container:2.7.1.arm64
   dataVolumeCapacity: 10Gi
   tls:
     secretRef: tls-ksqldb
@@ -47,8 +47,8 @@ spec:
         initialDelaySeconds: 180
     resources:
       limits:
-        memory: 1.75Gi
-        cpu: 2
+        memory: 1.5Gi
+        cpu: 1500m
     podSecurityContext:
       runAsUser: 0
 ---
@@ -60,8 +60,8 @@ metadata:
 spec:
   replicas: 1
   image:
-    application: bargovic/cp-schema-registry:7.3.1-ubi8-aarch64
-    init: bargovic/confluent-init-container:2.5.1.aarch64
+    application: bargovic/cp-schema-registry:7.5.1-ubi8-aarch64
+    init: confluentinc/confluent-init-container:2.7.1.arm64
   tls:
     secretRef: tls-schemaregistry
   authorization:
@@ -107,8 +107,8 @@ metadata:
 spec:
   replicas: 1
   image:
-    application: bargovic/cp-enterprise-control-center:7.3.1-ubi8-aarch64
-    init: bargovic/confluent-init-container:2.5.1.aarch64
+    application: bargovic/cp-enterprise-control-center:7.5.1-ubi8-aarch64
+    init: confluentinc/confluent-init-container:2.7.1.arm64
   dataVolumeCapacity: 15Gi
   tls:
     secretRef: tls-controlcenter
@@ -142,11 +142,11 @@ spec:
       url: https://schemaregistry.confluent.svc.cluster.local:8081
       tls:
         enabled: true
-    #ksqldb:
-    #- name: ksql
-    #  url: https://ksqldb.confluent.svc.cluster.local:8088
-    #  tls:
-    #    enabled: true
+    ksqldb:
+    - name: ksql
+      url: https://ksqldb.confluent.svc.cluster.local:8088
+      tls:
+        enabled: true
     connect:
     - name: connect-dev
       url:  https://connect.confluent.svc.cluster.local:8083
@@ -181,8 +181,8 @@ metadata:
 spec:
   replicas: 1
   image:
-    application: bargovic/cp-server-connect:7.3.1-18-ubi8-aarch64
-    init: bargovic/confluent-init-container:2.5.1.aarch64
+    application: bargovic/cp-server-connect:7.5.1-ubi8-aarch64
+    init: confluentinc/confluent-init-container:2.7.1.arm64
   tls:
     secretRef: tls-connect
   authorization:
@@ -214,8 +214,8 @@ spec:
   podTemplate:
     resources:
       limits:
-        memory: 1.75Gi
-        cpu: 2
+        memory: 1.5Gi
+        cpu: 1500m
     probe:
       readiness:
         initialDelaySeconds: 360

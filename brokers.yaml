@@ -6,8 +6,8 @@ metadata:
 spec:
   replicas: 3
   image:
-    application: bargovic/cp-zookeeper:7.3.1-ubi8-aarch64
-    init: bargovic/confluent-init-container:2.5.1.aarch64
+    application: bargovic/cp-zookeeper:7.5.1-ubi8-aarch64
+    init: confluentinc/confluent-init-container:2.7.1.arm64
   dataVolumeCapacity: 10Gi
   logVolumeCapacity: 5Gi
   authentication:
@@ -46,8 +46,8 @@ metadata:
 spec:
   replicas: 3
   image:
-    application: bargovic/cp-server:7.3.1-ubi8-aarch64
-    init: bargovic/confluent-init-container:2.5.1.aarch64
+    application: bargovic/cp-server:7.5.1-ubi8-aarch64
+    init: confluentinc/confluent-init-container:2.7.1.arm64
   dataVolumeCapacity: 25Gi
   mountedSecrets:
     - secretRef: aws-secret
