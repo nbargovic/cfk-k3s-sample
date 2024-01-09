@@ -51,6 +51,8 @@ spec:
         cpu: 1500m
     podSecurityContext:
       runAsUser: 0
+  license:
+    globalLicense: true
 ---
 apiVersion: platform.confluent.io/v1beta1
 kind: SchemaRegistry
@@ -98,6 +100,8 @@ spec:
         cpu: 1
     podSecurityContext:
       runAsUser: 0
+  license:
+    globalLicense: true
 ---
 apiVersion: platform.confluent.io/v1beta1
 kind: ControlCenter
@@ -172,6 +176,8 @@ spec:
       - key: "allowOnMaster"
         operator: "Exists"
         effect: "NoSchedule"
+  license:
+    globalLicense: true
 ---
 apiVersion: platform.confluent.io/v1beta1
 kind: Connect
@@ -223,3 +229,5 @@ spec:
         initialDelaySeconds: 360
     podSecurityContext:
       runAsUser: 0
+  license:
+    globalLicense: true

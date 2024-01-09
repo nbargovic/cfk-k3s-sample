@@ -35,6 +35,8 @@ spec:
         labelSelector:
           matchLabels:
             app: zookeeper
+  license:
+    globalLicense: true
 ---
 apiVersion: platform.confluent.io/v1beta1
 kind: Kafka
@@ -142,6 +144,8 @@ spec:
         labelSelector:
           matchLabels:
             app: kafka
+  license:
+    globalLicense: true
 ---
 apiVersion: platform.confluent.io/v1beta1
 kind: KafkaRestClass
