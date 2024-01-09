@@ -94,7 +94,7 @@ spec:
   podTemplate:
     resources:
       limits:
-        memory: 1Gi
+        memory: 1.25Gi
         cpu: 1
     podSecurityContext:
       runAsUser: 0
@@ -118,7 +118,7 @@ spec:
     name: local-path
   configOverrides:
     server:
-      - "confluent.controlcenter.mode.enable=management"
+      - "confluent.controlcenter.mode.enable=all"
       - "confluent.metadata.enable.server.urls.refresh=false"
       - "confluent.controlcenter.streams.confluent.metadata.enable.server.urls.refresh=false"
   dependencies:

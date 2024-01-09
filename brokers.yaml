@@ -35,8 +35,6 @@ spec:
         labelSelector:
           matchLabels:
             app: zookeeper
-  license:
-    globalLicense: true
 ---
 apiVersion: platform.confluent.io/v1beta1
 kind: Kafka
@@ -51,8 +49,6 @@ spec:
   dataVolumeCapacity: 25Gi
   mountedSecrets:
     - secretRef: aws-secret
-  metricReporter:
-    enabled: false
   configOverrides:
     server:
       - "log.retention.hours=72"
@@ -64,7 +60,7 @@ spec:
       - "confluent.tier.backend=S3"
       - "confluent.tier.s3.bucket=nbargovic-tiered-storage-os"
       - "confluent.tier.s3.region=us-east-1"
-      - "confluent.tier.s3.cred.file.path=/mnt/secrets/aws-secret/aws-creds"
+      - "confluent.tier.s3.cred.file.path=/mnt/secrets/aws-secret/aws-creds.txt"
       - "confluent.metadata.enable.server.urls.refresh=false"
       - "kafka.rest.confluent.metadata.enable.server.urls.refresh=false"
   tls:
@@ -146,8 +142,6 @@ spec:
         labelSelector:
           matchLabels:
             app: kafka
-  license:
-    globalLicense: true
 ---
 apiVersion: platform.confluent.io/v1beta1
 kind: KafkaRestClass
