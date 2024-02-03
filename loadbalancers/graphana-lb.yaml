@@ -1,0 +1,14 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: grafana-lb
+  namespace: prometheus
+spec:
+  type: LoadBalancer
+  ports:
+    - protocol: TCP
+      name: grafana
+      port: 80
+      targetPort: 3000
+  selector:
+    app.kubernetes.io/instance: grafana-cflt
