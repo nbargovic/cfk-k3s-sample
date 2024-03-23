@@ -4,4 +4,4 @@ truststore.p12
 keystore.p12
 jksPassword.txt
 mtls/generated/
-syslog-lb.yaml
+loadbalancers/syslog-lb.yaml

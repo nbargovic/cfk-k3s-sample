@@ -1,5 +1,4 @@
 # cfk-k3s-sample
-CP 7.5 and CFK 2.7 **aarch64** images available here: [https://hub.docker.com/u/bargovic](https://hub.docker.com/u/bargovic)
 
 This is a set of sample development scripts to install Confluent Platform on Rancher K3s.
 
@@ -21,6 +20,7 @@ Deployment Steps
 5. Start the brokers with ```kubectl apply -f brokers.yaml -n confluent```
 6. Add role bindings  ```kubectl apply -f rolebindings.yaml -n confluent```
 7. Start the other services with ```kubectl apply -f services.yaml -n confluent```
-8. Start RestProxy ```kubectl apply -f kafkarestproxy.yaml -n confluent```
+8. Start ControlCenter with ```kubectl apply -f controlcenter.yaml -n confluent```
+9. Start RestProxy ```kubectl apply -f kafkarestproxy.yaml -n confluent```
 
 

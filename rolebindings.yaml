@@ -75,22 +75,27 @@ metadata:
   name: ksql-rb-cluster
   namespace: confluent
 spec:
+  clustersScopeByIds:
+    ksqlClusterId: confluent.ksqldb_
   principal:
     type: user
     name: ksql
+  resourcePatterns:
+  - name: ksql-cluster
+    patternType: LITERAL
+    resourceType: KsqlCluster
   role: ClusterAdmin
 ---
 # rolebindings for ksql migrations example
 apiVersion: platform.confluent.io/v1beta1
 kind: ConfluentRolebinding
 metadata:
-  name: ksql-migrations-rb-ksql
+  name: ksql-rb-migrations
   namespace: confluent
 spec:
   principal:
     type: user
     name: ksql
-  role: ResourceOwner
   resourcePatterns:
     - name: confluent.ksqldb_ksql_MIGRATION
       patternType: PREFIXED
@@ -98,18 +103,23 @@ spec:
     - name: _confluent-ksql-confluent.ksqldb_
       patternType: PREFIXED
       resourceType: Topic
-    - name: order
+    - name: test
       patternType: PREFIXED
       resourceType: Topic
+  role: ResourceOwner
 ---
-# rolebinding `testadmin-rb` allows `testadmin` to see kafkaCluster
+# rolebinding needed for connect
 apiVersion: platform.confluent.io/v1beta1
 kind: ConfluentRolebinding
 metadata:
-  name: testadmin-rb
+  name: connect-rb-command
   namespace: confluent
 spec:
   principal:
     type: user
-    name: testadmin
-  role: ClusterAdmin
+    name: connect
+  resourcePatterns:
+    - name: _confluent-command
+      patternType: LITERAL
+      resourceType: Topic
+  role: ResourceOwner

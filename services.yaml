@@ -7,8 +7,8 @@ metadata:
 spec:
   replicas: 1
   image:
-    application: bargovic/cp-ksqldb-server:7.5.1-ubi8-aarch64
-    init: confluentinc/confluent-init-container:2.7.1.arm64
+    application: confluentinc/cp-ksqldb-server:7.6.0-2-ubi8-arm64
+    init: confluentinc/confluent-init-container:2.8.0.arm64
   dataVolumeCapacity: 10Gi
   tls:
     secretRef: tls-ksqldb
@@ -55,8 +55,8 @@ spec:
         initialDelaySeconds: 180
     resources:
       limits:
-        memory: 6Gi
-        cpu: 3
+        memory: 4Gi
+        cpu: 2
     podSecurityContext:
       runAsUser: 0
   license:
@@ -70,8 +70,8 @@ metadata:
 spec:
   replicas: 1
   image:
-    application: bargovic/cp-schema-registry:7.5.1-ubi8-aarch64
-    init: confluentinc/confluent-init-container:2.7.1.arm64
+    application: confluentinc/cp-schema-registry:7.6.0-2-ubi8-arm64
+    init: confluentinc/confluent-init-container:2.8.0.arm64
   tls:
     secretRef: tls-schemaregistry
   authorization:
@@ -104,88 +104,14 @@ spec:
   podTemplate:
     resources:
       limits:
-        memory: 2Gi
+        memory: 1800M
         cpu: 2
     podSecurityContext:
       runAsUser: 0
-  license:
-    globalLicense: true
----
-apiVersion: platform.confluent.io/v1beta1
-kind: ControlCenter
-metadata:
-  name: controlcenter
-  namespace: confluent
-spec:
-  replicas: 1
-  image:
-    application: bargovic/cp-enterprise-control-center:7.5.1-ubi8-aarch64
-    init: confluentinc/confluent-init-container:2.7.1.arm64
-  dataVolumeCapacity: 15Gi
-  tls:
-    secretRef: tls-controlcenter
-  authorization:
-    type: rbac
-  configOverrides:
-    server:
-      - "confluent.controlcenter.mode.enable=all"
-      - "confluent.metadata.enable.server.urls.refresh=false"
-      - "confluent.controlcenter.streams.confluent.metadata.enable.server.urls.refresh=false"
-  dependencies:
-    kafka:
-      bootstrapEndpoint: kafka.confluent.svc.cluster.local:9071
-      authentication:
-        type: mtls
-      tls:
-        enabled: true
-    mds:
-      endpoint: https://kafka.confluent.svc.cluster.local:8090
-      tokenKeyPair:
-        secretRef: mds-token
-      authentication:
-        type: bearer
-        bearer:
-          secretRef: c3-mds-client
-      tls:
-        enabled: true
-    schemaRegistry:
-      url: https://schemaregistry.confluent.svc.cluster.local:8081
-      tls:
-        enabled: true
-    ksqldb:
-    - name: ksql
-      url: https://ksqldb.confluent.svc.cluster.local:8088
-      tls:
-        enabled: true
-    connect:
-    - name: connect-dev
-      url:  https://connect.confluent.svc.cluster.local:8083
-      tls:
-        enabled: true
-  externalAccess:
-    type: loadBalancer
-    loadBalancer:
-      domain: fios-router.home
-  podTemplate:
-    affinity:
-      nodeAffinity:
-        requiredDuringSchedulingIgnoredDuringExecution:
-          nodeSelectorTerms:
-            - matchExpressions:
-                - key: "kubernetes.io/hostname"
-                  operator: In
-                  values: [ "alonso" ]
-    resources:
-      limits:
-        memory: 6Gi
-        cpu: 3
-    probe:
-      readiness:
-        initialDelaySeconds: 180
-      liveness:
-        initialDelaySeconds: 180
-    podSecurityContext:
-      runAsUser: 0
+    tolerations:
+      - key: "allowOnMaster"
+        operator: "Exists"
+        effect: "NoSchedule"
   license:
     globalLicense: true
 ---
@@ -197,8 +123,8 @@ metadata:
 spec:
   replicas: 1
   image:
-    application: bargovic/cp-server-connect:7.5.1-ubi8-aarch64
-    init: confluentinc/confluent-init-container:2.7.1.arm64
+    application: bargovic/cp-server-connect:7.6.0-2-ubi8-arm64.1
+    init: confluentinc/confluent-init-container:2.8.0.arm64
   tls:
     secretRef: tls-connect
   authorization:
@@ -230,7 +156,7 @@ spec:
   podTemplate:
     resources:
       limits:
-        memory: 3Gi
+        memory: 2Gi
         cpu: 2
     probe:
       readiness:
