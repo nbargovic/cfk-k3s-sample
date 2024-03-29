@@ -1,0 +1,247 @@
+apiVersion: platform.confluent.io/v1beta1
+kind: Kafka
+metadata:
+  annotations:
+    kubectl.kubernetes.io/last-applied-configuration: |
+      {"apiVersion":"platform.confluent.io/v1beta1","kind":"Kafka","metadata":{"annotations":{},"name":"kafka","namespace":"confluent"},"spec":{"authorization":{"superUsers":["User:kafka"],"type":"rbac"},"configOverrides":{"log4j":["log4j.logger.org.apache.kafka.metadata.migration=TRACE"],"server":["log.retention.hours=72","log.roll.hours=71","log.segment.bytes=209715200","confluent.support.metrics.enable=false","confluent.tier.feature=false","confluent.tier.enable=false","confluent.tier.backend=S3","confluent.tier.s3.bucket=nbargovic-tiered-storage-os","confluent.tier.s3.region=us-east-1","confluent.tier.s3.cred.file.path=/mnt/secrets/aws-secret/aws-creds.txt","confluent.metadata.enable.server.urls.refresh=false","kafka.rest.confluent.metadata.enable.server.urls.refresh=false"]},"dataVolumeCapacity":"25Gi","dependencies":{"kafkaRest":{"authentication":{"bearer":{"secretRef":"mds-client"},"type":"bearer"}},"zookeeper":{"authentication":{"type":"mtls"},"endpoint":"zookeeper.confluent.svc.cluster.local:2182","tls":{"enabled":true}}},"image":{"application":"confluentinc/cp-server:7.6.0-2-ubi8.arm64","init":"confluentinc/confluent-init-container:2.8.0.arm64"},"license":{"globalLicense":true},"listeners":{"external":{"authentication":{"principalMappingRules":["RULE:.*CN[\\s]?=[\\s]?([a-zA-Z0-9.]*)?.*/$1/"],"type":"mtls"},"externalAccess":{"loadBalancer":{"domain":"fios-router.home"},"type":"loadBalancer"},"tls":{"enabled":true}},"internal":{"authentication":{"principalMappingRules":["RULE:.*CN[\\s]?=[\\s]?([a-zA-Z0-9.]*)?.*/$1/"],"type":"mtls"},"tls":{"enabled":true}}},"mountedSecrets":[{"secretRef":"aws-secret"}],"podTemplate":{"labels":{"pod-group":"kafka"},"podSecurityContext":{"runAsUser":0},"probe":{"liveness":{"initialDelaySeconds":360},"readiness":{"initialDelaySeconds":360}},"resources":{"limits":{"cpu":2,"memory":"2Gi"}},"topologySpreadConstraints":[{"labelSelector":{"matchLabels":{"app":"kafka"}},"maxSkew":1,"topologyKey":"kubernetes.io/hostname","whenUnsatisfiable":"DoNotSchedule"}]},"replicas":3,"services":{"mds":{"provider":{"ldap":{"address":"ldap://ldap.ldap.svc.cluster.local:9389","authentication":{"simple":{"secretRef":"credential"},"type":"simple"},"configurations":{"groupMemberAttribute":"memberUid","groupMemberAttributePattern":"cn=(.*),ou=users,dc=test,dc=com","groupNameAttribute":"cn","groupObjectClass":"posixGroup","groupSearchBase":"dc=test,dc=com","groupSearchScope":2,"userMemberOfAttributePattern":"cn=(.*),dc=test,dc=com","userNameAttribute":"cn","userObjectClass":"simpleSecurityObject","userSearchBase":"dc=test,dc=com","userSearchScope":2}},"type":"ldap"},"tls":{"enabled":true},"tokenKeyPair":{"secretRef":"mds-token"}}},"tls":{"secretRef":"tls-kafka"}}}
+    platform.confluent.io/config-revision-hash: d6gb7dfmkt
+    platform.confluent.io/kraft-migration-cr-lock: "true"
+    platform.confluent.io/last-pod-template-hash: 549cbf5f8
+  creationTimestamp: "2024-03-23T16:58:42Z"
+  finalizers:
+  - kafka.finalizers.platform.confluent.io
+  generation: 9
+  name: kafka
+  namespace: confluent
+  resourceVersion: "19006092"
+  uid: ada2bb67-1594-4981-ace8-b11f1d1908c1
+spec:
+  authorization:
+    superUsers:
+    - User:kafka
+    type: rbac
+  configOverrides:
+    log4j:
+    - log4j.logger.org.apache.kafka.metadata.migration=TRACE
+    - log4j.logger.org.apache.kafka.metadata.migration=TRACE
+    server:
+    - log.segment.bytes=209715200
+    - confluent.support.metrics.enable=false
+    - confluent.tier.enable=false
+    - confluent.tier.backend=S3
+    - confluent.tier.s3.bucket=nbargovic-tiered-storage-os
+    - confluent.tier.s3.cred.file.path=/mnt/secrets/aws-secret/aws-creds.txt
+    - confluent.cluster.link.metadata.topic.enable=true
+    - confluent.tier.s3.region=us-east-1
+    - confluent.metadata.enable.server.urls.refresh=false
+    - confluent.tier.feature=false
+    - kafka.rest.confluent.metadata.enable.server.urls.refresh=false
+    - log.retention.hours=72
+    - log.roll.hours=71
+    - inter.broker.protocol.version=3.6
+  dataVolumeCapacity: 25Gi
+  dependencies:
+    kRaftController:
+      clusterRef:
+        name: kraftcontroller
+        namespace: confluent
+    kafkaRest:
+      authentication:
+        bearer:
+          secretRef: mds-client
+        type: bearer
+  image:
+    application: confluentinc/cp-server:7.6.0-2-ubi8.arm64
+    init: confluentinc/confluent-init-container:2.8.0.arm64
+  license:
+    globalLicense: true
+  listeners:
+    external:
+      authentication:
+        principalMappingRules:
+        - RULE:.*CN[\s]?=[\s]?([a-zA-Z0-9.]*)?.*/$1/
+        type: mtls
+      externalAccess:
+        loadBalancer:
+          domain: fios-router.home
+        type: loadBalancer
+      tls:
+        enabled: true
+    internal:
+      authentication:
+        principalMappingRules:
+        - RULE:.*CN[\s]?=[\s]?([a-zA-Z0-9.]*)?.*/$1/
+        type: mtls
+      tls:
+        enabled: true
+  mountedSecrets:
+  - secretRef: aws-secret
+  podTemplate:
+    labels:
+      pod-group: kafka
+    podSecurityContext:
+      runAsUser: 0
+    probe:
+      liveness:
+        initialDelaySeconds: 360
+      readiness:
+        initialDelaySeconds: 360
+    resources:
+      limits:
+        cpu: "2"
+        memory: 2Gi
+    topologySpreadConstraints:
+    - labelSelector:
+        matchLabels:
+          app: kafka
+      maxSkew: 1
+      topologyKey: kubernetes.io/hostname
+      whenUnsatisfiable: DoNotSchedule
+  replicas: 3
+  services:
+    mds:
+      provider:
+        ldap:
+          address: ldap://ldap.ldap.svc.cluster.local:9389
+          authentication:
+            simple:
+              secretRef: credential
+            type: simple
+          configurations:
+            groupMemberAttribute: memberUid
+            groupMemberAttributePattern: cn=(.*),ou=users,dc=test,dc=com
+            groupNameAttribute: cn
+            groupObjectClass: posixGroup
+            groupSearchBase: dc=test,dc=com
+            groupSearchScope: 2
+            userMemberOfAttributePattern: cn=(.*),dc=test,dc=com
+            userNameAttribute: cn
+            userObjectClass: simpleSecurityObject
+            userSearchBase: dc=test,dc=com
+            userSearchScope: 2
+        type: ldap
+      tls:
+        enabled: true
+      tokenKeyPair:
+        secretRef: mds-token
+  tls:
+    secretRef: tls-kafka
+status:
+  authorizationType: rbac
+  clusterID: xyoHtUFpSq-esAxgyFAJbA
+  clusterName: kafka
+  clusterNamespace: confluent
+  conditions:
+  - lastProbeTime: "2024-03-23T16:58:48Z"
+    lastTransitionTime: "2024-03-29T17:25:40Z"
+    message: Deployment has minimum availability.
+    reason: MinimumReplicasAvailable
+    status: "True"
+    type: platform.confluent.io/statefulset-available
+  - lastProbeTime: "2024-03-23T16:58:48Z"
+    lastTransitionTime: "2024-03-29T17:25:40Z"
+    message: Kubernetes resources ready.
+    reason: KubernetesResourcesReady
+    status: "True"
+    type: platform.confluent.io/resources-ready
+  - lastProbeTime: "2024-03-23T16:58:48Z"
+    lastTransitionTime: "2024-03-29T17:25:40Z"
+    message: Cluster is ready.
+    reason: ClusterIsReady
+    status: "True"
+    type: platform.confluent.io/cluster-ready
+  - lastProbeTime: "2024-03-23T16:58:48Z"
+    lastTransitionTime: "2024-03-23T16:58:48Z"
+    message: Cluster is not being garbage collected
+    reason: Garbage Collection not triggered
+    status: "False"
+    type: platform.confluent.io/garbage-collecting
+  - lastProbeTime: "2024-03-23T16:58:49Z"
+    lastTransitionTime: "2024-03-29T17:25:40Z"
+    message: Cluster is not rolling, ignore=false
+    reason: ClusterNotRolling
+    status: "False"
+    type: platform.confluent.io/rolling
+  - lastProbeTime: "2024-03-24T05:32:12Z"
+    lastTransitionTime: "2024-03-24T05:32:12Z"
+    message: Cluster shrink not enabled
+    reason: annotation platform.confluent.io/enable-shrink value is not true
+    status: "False"
+    type: platform.confluent.io/enable-shrink
+  - lastProbeTime: "2024-03-24T05:32:13Z"
+    lastTransitionTime: "2024-03-24T05:32:13Z"
+    message: Configure workflow not enabled
+    reason: annotation platform.confluent.io/enable-dynamic-configs value is not true
+    status: "False"
+    type: platform.confluent.io/enable-dynamic-configs
+  - lastProbeTime: "2024-03-29T14:24:58Z"
+    lastTransitionTime: "2024-03-29T17:25:40Z"
+    message: Configuration is updated.
+    reason: ConfigurationIsUpdated
+    status: "False"
+    type: platform.confluent.io/config-revision-hash
+  currentClusterVersion: "7.6"
+  currentReplicas: 3
+  internalSecrets:
+  - internal-confluent-operator-licensing
+  - kafka-pkcs12
+  listeners:
+    controller:
+      client: |-
+        bootstrap.servers=kafka.confluent.svc.cluster.local:9074
+        security.protocol=PLAINTEXT
+      internalEndpoint: kafka.confluent.svc.cluster.local:9074
+    external:
+      advertisedExternalEndpoints:
+      - b0.fios-router.home:9092
+      - b1.fios-router.home:9092
+      - b2.fios-router.home:9092
+      authenticationType: mtls
+      client: |-
+        bootstrap.servers=kafka.fios-router.home:9092
+        security.protocol=SSL
+        ssl.keystore.location=/mnt/sslcerts/keystore.p12
+        ssl.keystore.password=<<jksPassword>>
+        ssl.truststore.location=/mnt/sslcerts/truststore.p12
+        ssl.truststore.password=<<jksPassword>>
+      externalAccessType: loadBalancer
+      externalEndpoint: kafka.fios-router.home:9092
+      internalEndpoint: kafka.confluent.svc.cluster.local:9092
+      tls: true
+    internal:
+      authenticationType: mtls
+      client: |-
+        bootstrap.servers=kafka.confluent.svc.cluster.local:9071
+        security.protocol=SSL
+        ssl.keystore.location=/mnt/sslcerts/keystore.p12
+        ssl.keystore.password=<<jksPassword>>
+        ssl.truststore.location=/mnt/sslcerts/truststore.p12
+        ssl.truststore.password=<<jksPassword>>
+      internalEndpoint: kafka.confluent.svc.cluster.local:9071
+      tls: true
+    replication:
+      authenticationType: mtls
+      internalEndpoint: kafka.confluent.svc.cluster.local:9072
+      tls: true
+    token:
+      authenticationType: oauthbearer
+      internalEndpoint: kafka.confluent.svc.cluster.local:9073
+      tls: true
+  minISR: 2
+  observedGeneration: 9
+  operatorVersion: v0.921.2
+  phase: RUNNING
+  previousClusterVersion: "6.2"
+  readyReplicas: 3
+  replicas: 3
+  replicationFactor: 3
+  selector: app=kafka,clusterId=confluent,confluent-platform=true,type=kafka
+  services:
+    kafka-rest:
+      authenticationType: bearer
+      internalEndpoint: https://kafka.confluent.svc.cluster.local:8090
+      tls: true
+    mds:
+      authenticationType: bearer
+      internalEndpoint: https://kafka.confluent.svc.cluster.local:8090
+      tls: true

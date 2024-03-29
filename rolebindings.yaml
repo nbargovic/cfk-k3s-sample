@@ -80,11 +80,11 @@ spec:
   principal:
     type: user
     name: ksql
+  role: ResourceOwner
   resourcePatterns:
   - name: ksql-cluster
     patternType: LITERAL
     resourceType: KsqlCluster
-  role: ClusterAdmin
 ---
 # rolebindings for ksql migrations example
 apiVersion: platform.confluent.io/v1beta1

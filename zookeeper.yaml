@@ -1,0 +1,39 @@
+apiVersion: platform.confluent.io/v1beta1
+kind: Zookeeper
+metadata:
+  name: zookeeper
+  namespace: confluent
+spec:
+  replicas: 3
+  image:
+    application: confluentinc/cp-zookeeper:7.6.0-2-ubi8.arm64
+    init: confluentinc/confluent-init-container:2.8.0.arm64
+  dataVolumeCapacity: 10Gi
+  logVolumeCapacity: 5Gi
+  authentication:
+    type: mtls
+    principalMappingRules:
+      - RULE:.*CN[\s]?=[\s]?([a-zA-Z0-9.]*)?.*/$1/
+  tls:
+    secretRef: tls-zookeeper
+  configOverrides:
+    jvm:
+      - "-Dcom.sun.management.jmxremote=false"
+  podTemplate:
+    resources:
+      limits:
+        memory: 512Mi
+        cpu: 500m
+    podSecurityContext:
+      runAsUser: 0
+    labels:
+      pod-group: zookeeper
+    topologySpreadConstraints:
+      - maxSkew: 1
+        topologyKey: "kubernetes.io/hostname"
+        whenUnsatisfiable: DoNotSchedule
+        labelSelector:
+          matchLabels:
+            app: zookeeper
+  license:
+    globalLicense: true
