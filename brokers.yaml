@@ -6,8 +6,8 @@ metadata:
 spec:
   replicas: 3
   image:
-    application: bargovic/cp-zookeeper:7.5.1-ubi8-aarch64
-    init: confluentinc/confluent-init-container:2.7.1.arm64
+    application: confluentinc/cp-zookeeper:7.6.0-2-ubi8.arm64
+    init: confluentinc/confluent-init-container:2.8.0.arm64
   dataVolumeCapacity: 10Gi
   logVolumeCapacity: 5Gi
   authentication:
@@ -46,25 +46,23 @@ metadata:
 spec:
   replicas: 3
   image:
-    application: bargovic/cp-server:7.5.1-ubi8-aarch64
-    init: confluentinc/confluent-init-container:2.7.1.arm64
+    application: confluentinc/cp-server:7.6.0-2-ubi8.arm64
+    init: confluentinc/confluent-init-container:2.8.0.arm64
   dataVolumeCapacity: 25Gi
   mountedSecrets:
     - secretRef: aws-secret
-  metricReporter:
-    enabled: false
   configOverrides:
     server:
       - "log.retention.hours=72"
       - "log.roll.hours=71"
       - "log.segment.bytes=209715200"
       - "confluent.support.metrics.enable=false"
-      - "confluent.tier.feature=true"
-      - "confluent.tier.enable=true"
+      - "confluent.tier.feature=false"
+      - "confluent.tier.enable=false"
       - "confluent.tier.backend=S3"
       - "confluent.tier.s3.bucket=nbargovic-tiered-storage-os"
       - "confluent.tier.s3.region=us-east-1"
-      - "confluent.tier.s3.cred.file.path=/mnt/secrets/aws-secret/aws-creds"
+      - "confluent.tier.s3.cred.file.path=/mnt/secrets/aws-secret/aws-creds.txt"
       - "confluent.metadata.enable.server.urls.refresh=false"
       - "kafka.rest.confluent.metadata.enable.server.urls.refresh=false"
   tls:
@@ -134,7 +132,12 @@ spec:
     resources:
       limits:
         memory: 2Gi
-        cpu: 1500m
+        cpu: 2
+    probe:
+      readiness:
+        initialDelaySeconds: 360
+      liveness:
+        initialDelaySeconds: 360
     podSecurityContext:
       runAsUser: 0
     labels:
@@ -148,6 +151,11 @@ spec:
             app: kafka
   license:
     globalLicense: true
+# metrics:
+  # prometheus:
+    # whitelist:
+    # blacklist:
+    # rules:
 ---
 apiVersion: platform.confluent.io/v1beta1
 kind: KafkaRestClass

@@ -1,0 +1,15 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: prometheus-lb
+  namespace: prometheus
+spec:
+  type: LoadBalancer
+  ports:
+    - protocol: TCP
+      name: prometheus-cflt
+      port: 80
+      targetPort: 9090
+  selector:
+    app.kubernetes.io/instance: prometheus-cflt
+    app.kubernetes.io/component: server
