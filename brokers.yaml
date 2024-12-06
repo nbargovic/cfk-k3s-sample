@@ -1,44 +1,4 @@
 apiVersion: platform.confluent.io/v1beta1
-kind: Zookeeper
-metadata:
-  name: zookeeper
-  namespace: confluent
-spec:
-  replicas: 3
-  image:
-    application: confluentinc/cp-zookeeper:7.6.0-2-ubi8.arm64
-    init: confluentinc/confluent-init-container:2.8.0.arm64
-  dataVolumeCapacity: 10Gi
-  logVolumeCapacity: 5Gi
-  authentication:
-    type: mtls
-    principalMappingRules:
-      - RULE:.*CN[\s]?=[\s]?([a-zA-Z0-9.]*)?.*/$1/
-  tls:
-    secretRef: tls-zookeeper
-  configOverrides:
-    jvm:
-      - "-Dcom.sun.management.jmxremote=false"
-  podTemplate:
-    resources:
-      limits:
-        memory: 512Mi
-        cpu: 500m
-    podSecurityContext:
-      runAsUser: 0
-    labels:
-      pod-group: zookeeper
-    topologySpreadConstraints:
-      - maxSkew: 1
-        topologyKey: "kubernetes.io/hostname"
-        whenUnsatisfiable: DoNotSchedule
-        labelSelector:
-          matchLabels:
-            app: zookeeper
-  license:
-    globalLicense: true
----
-apiVersion: platform.confluent.io/v1beta1
 kind: Kafka
 metadata:
   name: kafka
@@ -46,8 +6,8 @@ metadata:
 spec:
   replicas: 3
   image:
-    application: confluentinc/cp-server:7.6.0-2-ubi8.arm64
-    init: confluentinc/confluent-init-container:2.8.0.arm64
+    application: confluentinc/cp-server:7.8.0-2-ubi8.arm64
+    init: confluentinc/confluent-init-container:2.10.0.arm64
   dataVolumeCapacity: 25Gi
   mountedSecrets:
     - secretRef: aws-secret
@@ -122,12 +82,10 @@ spec:
         type: bearer
         bearer:
           secretRef: mds-client
-    zookeeper:
-      endpoint: zookeeper.confluent.svc.cluster.local:2182
-      authentication:
-        type: mtls
-      tls:
-        enabled: true
+    kRaftController:
+      clusterRef:
+        name: kraftcontroller
+        namespace: confluent
   podTemplate:
     resources:
       limits:
@@ -151,11 +109,32 @@ spec:
             app: kafka
   license:
     globalLicense: true
-# metrics:
-  # prometheus:
-    # whitelist:
-    # blacklist:
-    # rules:
+---
+apiVersion: platform.confluent.io/v1beta1
+kind: KRaftController
+metadata:
+  name: kraftcontroller
+  namespace: confluent
+spec:
+  clusterID: xyoHtUFpSq-esAxgyFAJbA
+  replicas: 3
+  image:
+    application: confluentinc/cp-server:7.8.0-2-ubi8.arm64
+    init: confluentinc/confluent-init-container:2.10.0
+  tls:
+    secretRef: tls-kafka
+  dataVolumeCapacity: 10G
+  configOverrides:
+    server:
+      - inter.broker.protocol.version=3.6
+  podTemplate:
+    topologySpreadConstraints:
+      - maxSkew: 1
+        topologyKey: "kubernetes.io/hostname"
+        whenUnsatisfiable: DoNotSchedule
+        labelSelector:
+          matchLabels:
+            app: kraftcontroller
 ---
 apiVersion: platform.confluent.io/v1beta1
 kind: KafkaRestClass

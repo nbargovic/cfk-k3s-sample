@@ -2,6 +2,7 @@
 
 This is a set of sample development scripts to install Confluent Platform on Rancher K3s.
 
+* KRaft Migration from Zookeeper - [docs here](https://github.com/confluentinc/confluent-kubernetes-examples/blob/master/migration/KRaftMigration/rbac-enabled-cluster/README.md)
 * Full TLS network encryption with user provided certificates - [docs here](https://docs.confluent.io/operator/current/co-network-encryption.html#user-provided-tls-certificates)
 * Authentication via LDAP - [docs here](https://docs.confluent.io/operator/current/co-authenticate.html#sasl-plain-with-ldap-authentication)
 * Authorization via RBAC - [docs here](https://docs.confluent.io/operator/current/co-rbac.html)

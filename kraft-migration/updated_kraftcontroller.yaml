@@ -1,0 +1,101 @@
+apiVersion: platform.confluent.io/v1beta1
+kind: KRaftController
+metadata:
+  annotations:
+    kubectl.kubernetes.io/last-applied-configuration: |
+      {"apiVersion":"platform.confluent.io/v1beta1","kind":"KRaftController","metadata":{"annotations":{"platform.confluent.io/kraft-migration-hold-krc-creation":"true"},"name":"kraftcontroller","namespace":"confluent"},"spec":{"dataVolumeCapacity":"10G","image":{"application":"confluentinc/cp-server:7.6.0","init":"confluentinc/confluent-init-container:2.8.0"},"podTemplate":{"topologySpreadConstraints":[{"labelSelector":{"matchLabels":{"app":"kraftcontroller"}},"maxSkew":1,"topologyKey":"kubernetes.io/hostname","whenUnsatisfiable":"DoNotSchedule"}]},"replicas":3,"tls":{"secretRef":"tls-kafka"}}}
+    platform.confluent.io/config-revision-hash: 5b72mmhghg
+    platform.confluent.io/kraft-migration-cr-lock: "true"
+    platform.confluent.io/last-pod-template-hash: 58995fcd99
+  creationTimestamp: "2024-03-29T16:00:13Z"
+  finalizers:
+  - kraftcontroller.finalizers.platform.confluent.io
+  generation: 3
+  name: kraftcontroller
+  namespace: confluent
+  resourceVersion: "19007838"
+  uid: e6bc5524-f055-4dd8-bbbf-fa123c383e44
+spec:
+  clusterID: xyoHtUFpSq-esAxgyFAJbA
+  configOverrides:
+    server:
+    - inter.broker.protocol.version=3.6
+  dataVolumeCapacity: 10G
+  image:
+    application: confluentinc/cp-server:7.6.0
+    init: confluentinc/confluent-init-container:2.8.0
+  podTemplate:
+    topologySpreadConstraints:
+    - labelSelector:
+        matchLabels:
+          app: kraftcontroller
+      maxSkew: 1
+      topologyKey: kubernetes.io/hostname
+      whenUnsatisfiable: DoNotSchedule
+  replicas: 3
+  tls:
+    secretRef: tls-kafka
+status:
+  brokerIdOffset: 9990
+  clusterID: xyoHtUFpSq-esAxgyFAJbA
+  clusterName: kraftcontroller
+  clusterNamespace: confluent
+  conditions:
+  - lastProbeTime: "2024-03-29T16:00:13Z"
+    lastTransitionTime: "2024-03-29T16:00:13Z"
+    message: KRaftMigration is enabled, Controller creation is in hold off state.
+    reason: KRaftMigrationControllerCreationDisable
+    status: "True"
+    type: platform.confluent.io/kraft-migration-hold-krc-creation
+  - lastProbeTime: "2024-03-29T16:29:17Z"
+    lastTransitionTime: "2024-03-29T17:31:54Z"
+    message: Deployment has minimum availability.
+    reason: MinimumReplicasAvailable
+    status: "True"
+    type: platform.confluent.io/statefulset-available
+  - lastProbeTime: "2024-03-29T16:29:17Z"
+    lastTransitionTime: "2024-03-29T17:31:54Z"
+    message: Kubernetes resources ready.
+    reason: KubernetesResourcesReady
+    status: "True"
+    type: platform.confluent.io/resources-ready
+  - lastProbeTime: "2024-03-29T16:29:17Z"
+    lastTransitionTime: "2024-03-29T17:31:54Z"
+    message: Cluster is ready.
+    reason: ClusterIsReady
+    status: "True"
+    type: platform.confluent.io/cluster-ready
+  - lastProbeTime: "2024-03-29T16:29:17Z"
+    lastTransitionTime: "2024-03-29T17:33:02Z"
+    message: Cluster is not being garbage collected
+    reason: Garbage Collection not triggered
+    status: "False"
+    type: platform.confluent.io/garbage-collecting
+  - lastProbeTime: "2024-03-29T16:29:17Z"
+    lastTransitionTime: "2024-03-29T17:31:54Z"
+    message: Cluster is not rolling, ignore=false
+    reason: ClusterNotRolling
+    status: "False"
+    type: platform.confluent.io/rolling
+  - lastProbeTime: "2024-03-29T17:27:00Z"
+    lastTransitionTime: "2024-03-29T17:31:54Z"
+    message: Configuration is updated.
+    reason: ConfigurationIsUpdated
+    status: "False"
+    type: platform.confluent.io/config-revision-hash
+  controllerQuorumVoters:
+  - brokerEndpoint: kraftcontroller-0.kraftcontroller.confluent.svc.cluster.local:9074
+    nodeId: 9990
+  - brokerEndpoint: kraftcontroller-1.kraftcontroller.confluent.svc.cluster.local:9074
+    nodeId: 9991
+  - brokerEndpoint: kraftcontroller-2.kraftcontroller.confluent.svc.cluster.local:9074
+    nodeId: 9992
+  currentReplicas: 3
+  internalSecrets:
+  - kraftcontroller-pkcs12
+  observedGeneration: 3
+  operatorVersion: v0.921.2
+  phase: RUNNING
+  readyReplicas: 3
+  replicas: 3
+  selector: app=kraftcontroller,clusterId=confluent,confluent-platform=true,type=kraftcontroller
