@@ -1,22 +1,13 @@
 apiVersion: platform.confluent.io/v1beta1
 kind: Kafka
 metadata:
-  annotations:
-    kubectl.kubernetes.io/last-applied-configuration: |
-      {"apiVersion":"platform.confluent.io/v1beta1","kind":"Kafka","metadata":{"annotations":{},"name":"kafka","namespace":"confluent"},"spec":{"authorization":{"superUsers":["User:kafka"],"type":"rbac"},"configOverrides":{"log4j":["log4j.logger.org.apache.kafka.metadata.migration=TRACE"],"server":["log.retention.hours=72","log.roll.hours=71","log.segment.bytes=209715200","confluent.support.metrics.enable=false","confluent.tier.feature=false","confluent.tier.enable=false","confluent.tier.backend=S3","confluent.tier.s3.bucket=nbargovic-tiered-storage-os","confluent.tier.s3.region=us-east-1","confluent.tier.s3.cred.file.path=/mnt/secrets/aws-secret/aws-creds.txt","confluent.metadata.enable.server.urls.refresh=false","kafka.rest.confluent.metadata.enable.server.urls.refresh=false"]},"dataVolumeCapacity":"25Gi","dependencies":{"kafkaRest":{"authentication":{"bearer":{"secretRef":"mds-client"},"type":"bearer"}},"zookeeper":{"authentication":{"type":"mtls"},"endpoint":"zookeeper.confluent.svc.cluster.local:2182","tls":{"enabled":true}}},"image":{"application":"confluentinc/cp-server:7.6.0-2-ubi8.arm64","init":"confluentinc/confluent-init-container:2.8.0.arm64"},"license":{"globalLicense":true},"listeners":{"external":{"authentication":{"principalMappingRules":["RULE:.*CN[\\s]?=[\\s]?([a-zA-Z0-9.]*)?.*/$1/"],"type":"mtls"},"externalAccess":{"loadBalancer":{"domain":"fios-router.home"},"type":"loadBalancer"},"tls":{"enabled":true}},"internal":{"authentication":{"principalMappingRules":["RULE:.*CN[\\s]?=[\\s]?([a-zA-Z0-9.]*)?.*/$1/"],"type":"mtls"},"tls":{"enabled":true}}},"mountedSecrets":[{"secretRef":"aws-secret"}],"podTemplate":{"labels":{"pod-group":"kafka"},"podSecurityContext":{"runAsUser":0},"probe":{"liveness":{"initialDelaySeconds":360},"readiness":{"initialDelaySeconds":360}},"resources":{"limits":{"cpu":2,"memory":"2Gi"}},"topologySpreadConstraints":[{"labelSelector":{"matchLabels":{"app":"kafka"}},"maxSkew":1,"topologyKey":"kubernetes.io/hostname","whenUnsatisfiable":"DoNotSchedule"}]},"replicas":3,"services":{"mds":{"provider":{"ldap":{"address":"ldap://ldap.ldap.svc.cluster.local:9389","authentication":{"simple":{"secretRef":"credential"},"type":"simple"},"configurations":{"groupMemberAttribute":"memberUid","groupMemberAttributePattern":"cn=(.*),ou=users,dc=test,dc=com","groupNameAttribute":"cn","groupObjectClass":"posixGroup","groupSearchBase":"dc=test,dc=com","groupSearchScope":2,"userMemberOfAttributePattern":"cn=(.*),dc=test,dc=com","userNameAttribute":"cn","userObjectClass":"simpleSecurityObject","userSearchBase":"dc=test,dc=com","userSearchScope":2}},"type":"ldap"},"tls":{"enabled":true},"tokenKeyPair":{"secretRef":"mds-token"}}},"tls":{"secretRef":"tls-kafka"}}}
-    platform.confluent.io/config-revision-hash: d6gb7dfmkt
-    platform.confluent.io/kraft-migration-cr-lock: "true"
-    platform.confluent.io/last-pod-template-hash: 549cbf5f8
-  finalizers:
-    - kafka.finalizers.platform.confluent.io
-  generation: 9
   name: kafka
   namespace: confluent
 spec:
   replicas: 3
   image:
-    application: confluentinc/cp-server:7.6.0-2-ubi8.arm64
-    init: confluentinc/confluent-init-container:2.8.0.arm64
+    application: confluentinc/cp-server:7.8.0-2-ubi8.arm64
+    init: confluentinc/confluent-init-container:2.10.0.arm64
   dataVolumeCapacity: 25Gi
   mountedSecrets:
     - secretRef: aws-secret
@@ -122,23 +113,14 @@ spec:
 apiVersion: platform.confluent.io/v1beta1
 kind: KRaftController
 metadata:
-  annotations:
-    kubectl.kubernetes.io/last-applied-configuration: |
-      {"apiVersion":"platform.confluent.io/v1beta1","kind":"KRaftController","metadata":{"annotations":{"platform.confluent.io/kraft-migration-hold-krc-creation":"true"},"name":"kraftcontroller","namespace":"confluent"},"spec":{"dataVolumeCapacity":"10G","image":{"application":"confluentinc/cp-server:7.6.0","init":"confluentinc/confluent-init-container:2.8.0"},"podTemplate":{"topologySpreadConstraints":[{"labelSelector":{"matchLabels":{"app":"kraftcontroller"}},"maxSkew":1,"topologyKey":"kubernetes.io/hostname","whenUnsatisfiable":"DoNotSchedule"}]},"replicas":3,"tls":{"secretRef":"tls-kafka"}}}
-    platform.confluent.io/config-revision-hash: 5b72mmhghg
-    platform.confluent.io/kraft-migration-cr-lock: "true"
-    platform.confluent.io/last-pod-template-hash: 58995fcd99
-  finalizers:
-    - kraftcontroller.finalizers.platform.confluent.io
-  generation: 3
   name: kraftcontroller
   namespace: confluent
 spec:
   clusterID: xyoHtUFpSq-esAxgyFAJbA
   replicas: 3
   image:
-    application: confluentinc/cp-server:7.6.0
-    init: confluentinc/confluent-init-container:2.8.0
+    application: confluentinc/cp-server:7.8.0-2-ubi8.arm64
+    init: confluentinc/confluent-init-container:2.10.0
   tls:
     secretRef: tls-kafka
   dataVolumeCapacity: 10G
