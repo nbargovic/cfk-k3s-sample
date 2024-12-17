@@ -25,6 +25,8 @@ spec:
       - "confluent.tier.s3.cred.file.path=/mnt/secrets/aws-secret/aws-creds.txt"
       - "confluent.metadata.enable.server.urls.refresh=false"
       - "kafka.rest.confluent.metadata.enable.server.urls.refresh=false"
+      - "confluent.balancer.enable=false"
+      - "confluent.reporters.telemetry.auto.enable=false"
   tls:
     secretRef: tls-kafka
   listeners:

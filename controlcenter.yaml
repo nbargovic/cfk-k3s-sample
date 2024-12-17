@@ -16,9 +16,12 @@ spec:
     type: rbac
   configOverrides:
     server:
+      - "confluent.controlcenter.mode.enable=management"
+      - "confluent.controlcenter.reduced.infrastructure.mode=true"
       - "confluent.controlcenter.mode.enable=all"
       - "confluent.metadata.enable.server.urls.refresh=false"
       - "confluent.controlcenter.streams.confluent.metadata.enable.server.urls.refresh=false"
+      - "confluent.controlcenter.ui.autoupdate.enable=false"
   dependencies:
     kafka:
       bootstrapEndpoint: kafka.confluent.svc.cluster.local:9071
@@ -65,7 +68,7 @@ spec:
                   values: [ "alonso" ]
     resources:
       limits:
-        memory: 4Gi
+        memory: 2.5Gi
         cpu: 2
     probe:
       readiness:
