@@ -65,11 +65,11 @@ spec:
             - matchExpressions:
                 - key: "kubernetes.io/hostname"
                   operator: In
-                  values: [ "alonso" ]
+                  values: [ "sainz" ]
     resources:
       limits:
-        memory: 2.5Gi
-        cpu: 2
+        memory: 6Gi
+        cpu: 3
     probe:
       readiness:
         initialDelaySeconds: 180

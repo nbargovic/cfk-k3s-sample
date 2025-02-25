@@ -56,7 +56,7 @@ spec:
         initialDelaySeconds: 180
     resources:
       limits:
-        memory: 4Gi
+        memory: 3Gi
         cpu: 2
     podSecurityContext:
       runAsUser: 0
@@ -105,14 +105,10 @@ spec:
   podTemplate:
     resources:
       limits:
-        memory: 1800M
+        memory: 2G
         cpu: 2
     podSecurityContext:
       runAsUser: 0
-    tolerations:
-      - key: "allowOnMaster"
-        operator: "Exists"
-        effect: "NoSchedule"
   license:
     globalLicense: true
 ---
@@ -155,9 +151,17 @@ spec:
     loadBalancer:
       domain: fios-router.home
   podTemplate:
+    affinity:
+      nodeAffinity:
+        requiredDuringSchedulingIgnoredDuringExecution:
+          nodeSelectorTerms:
+            - matchExpressions:
+                - key: "kubernetes.io/hostname"
+                  operator: In
+                  values: [ "alonso" ]
     resources:
       limits:
-        memory: 2Gi
+        memory: 5Gi
         cpu: 2
     probe:
       readiness:
