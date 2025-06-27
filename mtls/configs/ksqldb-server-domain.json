@@ -2,9 +2,9 @@
   "CN": "ksql",
   "hosts": [
     "ksql",
-    "ksqldb.confluent.svc.cluster.local",
-    "*.ksqldb.confluent.svc.cluster.local",
-    "*.fios-router.home"
+    "ksqldb.confluent-nick.svc.cluster.local",
+    "*.ksqldb.confluent-nick.svc.cluster.local",
+    "*.ps.eks.nick"
   ],
   "key": {
     "algo": "rsa",

@@ -161,7 +161,7 @@ spec:
                   values: [ "alonso" ]
     resources:
       limits:
-        memory: 5Gi
+        memory: 6Gi
         cpu: 2
     probe:
       readiness:

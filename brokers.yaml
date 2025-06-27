@@ -2,12 +2,12 @@ apiVersion: platform.confluent.io/v1beta1
 kind: Kafka
 metadata:
   name: kafka
-  namespace: confluent
+  namespace: confluent-nick
 spec:
   replicas: 3
   image:
-    application: confluentinc/cp-server:7.8.0-2-ubi8.arm64
-    init: confluentinc/confluent-init-container:2.10.0.arm64
+    application: confluentinc/cp-server:7.9.1
+    init: confluentinc/confluent-init-container:2.11.1
   dataVolumeCapacity: 25Gi
   mountedSecrets:
     - secretRef: aws-secret
@@ -20,13 +20,11 @@ spec:
       - "confluent.tier.feature=false"
       - "confluent.tier.enable=false"
       - "confluent.tier.backend=S3"
-      - "confluent.tier.s3.bucket=nbargovic-tiered-storage-os"
-      - "confluent.tier.s3.region=us-east-1"
+      - "confluent.tier.s3.bucket=nbargovic-tiered-storage-eks"
+      - "confluent.tier.s3.region=us-west-1"
       - "confluent.tier.s3.cred.file.path=/mnt/secrets/aws-secret/aws-creds.txt"
       - "confluent.metadata.enable.server.urls.refresh=false"
       - "kafka.rest.confluent.metadata.enable.server.urls.refresh=false"
-      - "confluent.balancer.enable=false"
-      - "confluent.reporters.telemetry.auto.enable=false"
   tls:
     secretRef: tls-kafka
   listeners:
@@ -47,7 +45,9 @@ spec:
       externalAccess:
         type: loadBalancer
         loadBalancer:
-          domain: fios-router.home
+          domain: ps.eks.nick
+          annotations:
+            service.beta.kubernetes.io/aws-load-balancer-scheme: "internet-facing"
   authorization:
     type: rbac
     superUsers:
@@ -87,12 +87,8 @@ spec:
     kRaftController:
       clusterRef:
         name: kraftcontroller
-        namespace: confluent
+        namespace: confluent-nick
   podTemplate:
-    resources:
-      limits:
-        memory: 3Gi
-        cpu: 2
     probe:
       readiness:
         initialDelaySeconds: 360
@@ -116,13 +112,13 @@ apiVersion: platform.confluent.io/v1beta1
 kind: KRaftController
 metadata:
   name: kraftcontroller
-  namespace: confluent
+  namespace: confluent-nick
 spec:
   clusterID: xyoHtUFpSq-esAxgyFAJbA
   replicas: 3
   image:
-    application: confluentinc/cp-server:7.8.0-2-ubi8.arm64
-    init: confluentinc/confluent-init-container:2.10.0
+    application: confluentinc/cp-server:7.9.1
+    init: confluentinc/confluent-init-container:2.11.1
   tls:
     secretRef: tls-kafka
   dataVolumeCapacity: 10G
@@ -142,7 +138,7 @@ apiVersion: platform.confluent.io/v1beta1
 kind: KafkaRestClass
 metadata:
   name: default
-  namespace: confluent
+  namespace: confluent-nick
 spec:
   kafkaRest:
     authentication:

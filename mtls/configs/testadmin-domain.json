@@ -1,7 +1,7 @@
 {
   "CN": "testadmin",
   "hosts": [
-    "*.fios-router.home"
+    "*.ps.eks.nick"
   ],
   "key": {
     "algo": "rsa",
