@@ -1,14 +1,13 @@
-
 apiVersion: platform.confluent.io/v1beta1
 kind: KsqlDB
 metadata:
   name: ksqldb
-  namespace: confluent
+  namespace: confluent-nick
 spec:
   replicas: 1
   image:
-    application: confluentinc/cp-ksqldb-server:7.8.0-2-ubi8.arm64
-    init: confluentinc/confluent-init-container:2.10.0.arm64
+    application: confluentinc/cp-ksqldb-server:8.0.0
+    init: confluentinc/confluent-init-container:3.0.0
   dataVolumeCapacity: 10Gi
   tls:
     secretRef: tls-ksqldb
@@ -21,13 +20,13 @@ spec:
       - "confluent.support.metrics.enable=false"
   dependencies:
     kafka:
-      bootstrapEndpoint: kafka.confluent.svc.cluster.local:9071
+      bootstrapEndpoint: kafka.confluent-nick.svc.cluster.local:9071
       authentication:
         type: mtls
       tls:
         enabled: true
     mds:
-      endpoint: https://kafka.confluent.svc.cluster.local:8090
+      endpoint: https://kafka.confluent-nick.svc.cluster.local:8090
       tokenKeyPair:
         secretRef: mds-token
       authentication:
@@ -39,25 +38,15 @@ spec:
   externalAccess:
     type: loadBalancer
     loadBalancer:
-      domain: fios-router.home
+      domain: ps.eks.nick
+      annotations:
+        service.beta.kubernetes.io/aws-load-balancer-scheme: "internet-facing"
   podTemplate:
-    affinity:
-      nodeAffinity:
-        requiredDuringSchedulingIgnoredDuringExecution:
-          nodeSelectorTerms:
-            - matchExpressions:
-                - key: "kubernetes.io/hostname"
-                  operator: In
-                  values: [ "alonso" ]
     probe:
       readiness:
         initialDelaySeconds: 180
       liveness:
         initialDelaySeconds: 180
-    resources:
-      limits:
-        memory: 3Gi
-        cpu: 2
     podSecurityContext:
       runAsUser: 0
   license:
@@ -67,12 +56,12 @@ apiVersion: platform.confluent.io/v1beta1
 kind: SchemaRegistry
 metadata:
   name: schemaregistry
-  namespace: confluent
+  namespace: confluent-nick
 spec:
   replicas: 1
   image:
-    application: confluentinc/cp-schema-registry:7.8.0-2-ubi8.arm64
-    init: confluentinc/confluent-init-container:2.10.0.arm64
+    application: confluentinc/cp-schema-registry:8.0.0
+    init: confluentinc/confluent-init-container:3.0.0
   tls:
     secretRef: tls-schemaregistry
   authorization:
@@ -83,13 +72,13 @@ spec:
       - "kafkastore.confluent.metadata.enable.server.urls.refresh=false"
   dependencies:
     kafka:
-      bootstrapEndpoint: kafka.confluent.svc.cluster.local:9071
+      bootstrapEndpoint: kafka.confluent-nick.svc.cluster.local:9071
       authentication:
         type: mtls
       tls:
         enabled: true
     mds:
-      endpoint: https://kafka.confluent.svc.cluster.local:8090
+      endpoint: https://kafka.confluent-nick.svc.cluster.local:8090
       tokenKeyPair:
         secretRef: mds-token
       authentication:
@@ -101,12 +90,10 @@ spec:
   externalAccess:
     type: loadBalancer
     loadBalancer:
-      domain: fios-router.home
+      domain: ps.eks.nick
+      annotations:
+        service.beta.kubernetes.io/aws-load-balancer-scheme: "internet-facing"
   podTemplate:
-    resources:
-      limits:
-        memory: 2G
-        cpu: 2
     podSecurityContext:
       runAsUser: 0
   license:
@@ -116,12 +103,29 @@ apiVersion: platform.confluent.io/v1beta1
 kind: Connect
 metadata:
   name: connect
-  namespace: confluent
+  namespace: confluent-nick
 spec:
   replicas: 1
+  build:
+    type: onDemand
+    onDemand:
+      plugins:
+        confluentHub:
+          - name: kafka-connect-http
+            owner: confluentinc
+            version: "latest"
+          - name: kafka-connect-s3-source
+            owner: confluentinc
+            version: "latest"
+          - name: kafka-connect-s3
+            owner: confluentinc
+            version: "latest"
+          - name: kafka-connect-syslog
+            owner: confluentinc
+            version: "latest"
   image:
-    application: bargovic/cp-server-connect:7.8.0-2-ubi8.arm64.1
-    init: confluentinc/confluent-init-container:2.10.0.arm64
+    application: confluentinc/cp-server-connect:8.0.0
+    init: confluentinc/confluent-init-container:3.0.0
   tls:
     secretRef: tls-connect
   authorization:
@@ -131,13 +135,13 @@ spec:
       - "confluent.metadata.enable.server.urls.refresh=false"
   dependencies:
     kafka:
-      bootstrapEndpoint: kafka.confluent.svc.cluster.local:9071
+      bootstrapEndpoint: kafka.confluent-nick.svc.cluster.local:9071
       authentication:
         type: mtls
       tls:
         enabled: true
     mds:
-      endpoint: https://kafka.confluent.svc.cluster.local:8090
+      endpoint: https://kafka.confluent-nick.svc.cluster.local:8090
       tokenKeyPair:
         secretRef: mds-token
       authentication:
@@ -149,20 +153,10 @@ spec:
   externalAccess:
     type: loadBalancer
     loadBalancer:
-      domain: fios-router.home
+      domain: ps.eks.nick
+      annotations:
+        service.beta.kubernetes.io/aws-load-balancer-scheme: "internet-facing"
   podTemplate:
-    affinity:
-      nodeAffinity:
-        requiredDuringSchedulingIgnoredDuringExecution:
-          nodeSelectorTerms:
-            - matchExpressions:
-                - key: "kubernetes.io/hostname"
-                  operator: In
-                  values: [ "alonso" ]
-    resources:
-      limits:
-        memory: 6Gi
-        cpu: 2
     probe:
       readiness:
         initialDelaySeconds: 360

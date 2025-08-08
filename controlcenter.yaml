@@ -3,12 +3,12 @@ apiVersion: platform.confluent.io/v1beta1
 kind: ControlCenter
 metadata:
   name: controlcenter
-  namespace: confluent
+  namespace: confluent-nick
 spec:
   replicas: 1
   image:
-    application: confluentinc/cp-enterprise-control-center:7.8.0-2-ubi8.arm64
-    init: confluentinc/confluent-init-container:2.10.0.arm64
+    application: confluentinc/cp-enterprise-control-center-next-gen:2.0.0
+    init: confluentinc/confluent-init-container:3.0.0
   dataVolumeCapacity: 15Gi
   tls:
     secretRef: tls-controlcenter
@@ -16,21 +16,19 @@ spec:
     type: rbac
   configOverrides:
     server:
-      - "confluent.controlcenter.mode.enable=management"
-      - "confluent.controlcenter.reduced.infrastructure.mode=true"
       - "confluent.controlcenter.mode.enable=all"
       - "confluent.metadata.enable.server.urls.refresh=false"
       - "confluent.controlcenter.streams.confluent.metadata.enable.server.urls.refresh=false"
       - "confluent.controlcenter.ui.autoupdate.enable=false"
   dependencies:
     kafka:
-      bootstrapEndpoint: kafka.confluent.svc.cluster.local:9071
+      bootstrapEndpoint: kafka.confluent-nick.svc.cluster.local:9071
       authentication:
         type: mtls
       tls:
         enabled: true
     mds:
-      endpoint: https://kafka.confluent.svc.cluster.local:8090
+      endpoint: https://kafka.confluent-nick.svc.cluster.local:8090
       tokenKeyPair:
         secretRef: mds-token
       authentication:
@@ -40,36 +38,26 @@ spec:
       tls:
         enabled: true
     schemaRegistry:
-      url: https://schemaregistry.confluent.svc.cluster.local:8081
+      url: https://schemaregistry.confluent-nick.svc.cluster.local:8081
       tls:
         enabled: true
     ksqldb:
       - name: ksql
-        url: https://ksqldb.confluent.svc.cluster.local:8088
+        url: https://ksqldb.confluent-nick.svc.cluster.local:8088
         tls:
           enabled: true
     connect:
-      - name: connect-dev
-        url:  https://connect.confluent.svc.cluster.local:8083
+      - name: connect
+        url:  https://connect.confluent-nick.svc.cluster.local:8083
         tls:
           enabled: true
   externalAccess:
     type: loadBalancer
     loadBalancer:
-      domain: fios-router.home
+      domain: ps.eks.nick
+      annotations:
+        service.beta.kubernetes.io/aws-load-balancer-scheme: "internet-facing"
   podTemplate:
-    affinity:
-      nodeAffinity:
-        requiredDuringSchedulingIgnoredDuringExecution:
-          nodeSelectorTerms:
-            - matchExpressions:
-                - key: "kubernetes.io/hostname"
-                  operator: In
-                  values: [ "sainz" ]
-    resources:
-      limits:
-        memory: 6Gi
-        cpu: 3
     probe:
       readiness:
         initialDelaySeconds: 180

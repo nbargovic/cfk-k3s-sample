@@ -6,8 +6,8 @@ metadata:
 spec:
   replicas: 3
   image:
-    application: confluentinc/cp-server:7.9.1
-    init: confluentinc/confluent-init-container:2.11.1
+    application: confluentinc/cp-server:8.0.0
+    init: confluentinc/confluent-init-container:3.0.0
   dataVolumeCapacity: 25Gi
   mountedSecrets:
     - secretRef: aws-secret
@@ -117,8 +117,8 @@ spec:
   clusterID: xyoHtUFpSq-esAxgyFAJbA
   replicas: 3
   image:
-    application: confluentinc/cp-server:7.9.1
-    init: confluentinc/confluent-init-container:2.11.1
+    application: confluentinc/cp-server:8.0.0
+    init: confluentinc/confluent-init-container:3.0.0
   tls:
     secretRef: tls-kafka
   dataVolumeCapacity: 10G
