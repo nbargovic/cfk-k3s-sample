@@ -52,6 +52,7 @@ spec:
     type: rbac
     superUsers:
       - User:kafka
+      - User:c3
   services:
     mds:
       tls:
@@ -88,6 +89,15 @@ spec:
       clusterRef:
         name: kraftcontroller
         namespace: confluent-nick
+    metricsClient:
+      url: https://controlcenter-next-gen.confluent-nick.svc.cluster.local:9090
+      authentication:
+        type: basic
+        basic:
+          secretRef: prometheus-client-creds
+      tls:
+        enabled: true
+        secretRef: tls-prometheus-client
   podTemplate:
     probe:
       readiness:
@@ -125,6 +135,16 @@ spec:
   configOverrides:
     server:
       - inter.broker.protocol.version=3.6
+  dependencies:
+    metricsClient:
+      url: https://controlcenter-next-gen.confluent-nick.svc.cluster.local:9090
+      authentication:
+        type: basic
+        basic:
+          secretRef: prometheus-client-creds
+      tls:
+        enabled: true
+        secretRef: tls-prometheus-client
   podTemplate:
     topologySpreadConstraints:
       - maxSkew: 1

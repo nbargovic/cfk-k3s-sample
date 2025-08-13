@@ -1,9 +1,9 @@
 {
-  "CN": "c3",
+  "CN": "alertmanager",
   "hosts": [
-    "c3",
-    "controlcenter.confluent-nick.svc.cluster.local",
-    "controlcenter-next-gen.confluent-nick.svc.cluster.local",
+    "alertmanager",
+    "alertmanager.confluent-nick.svc.cluster.local",
+    "*.alertmanager.confluent-nick.svc.cluster.local",
     "*.ps.eks.nick"
   ],
   "key": {

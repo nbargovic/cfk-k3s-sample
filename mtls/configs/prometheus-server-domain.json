@@ -1,9 +1,9 @@
 {
-  "CN": "c3",
+  "CN": "prometheus",
   "hosts": [
-    "c3",
-    "controlcenter.confluent-nick.svc.cluster.local",
-    "controlcenter-next-gen.confluent-nick.svc.cluster.local",
+    "prometheus",
+    "prometheus.confluent-nick.svc.cluster.local",
+    "*.prometheus.confluent-nick.svc.cluster.local",
     "*.ps.eks.nick"
   ],
   "key": {

@@ -2,68 +2,57 @@
 apiVersion: platform.confluent.io/v1beta1
 kind: ControlCenter
 metadata:
-  name: controlcenter
+  name: controlcenter-next-gen
   namespace: confluent-nick
 spec:
   replicas: 1
   image:
-    application: confluentinc/cp-enterprise-control-center-next-gen:2.0.0
+    application: confluentinc/cp-enterprise-control-center-next-gen:2.2.0
     init: confluentinc/confluent-init-container:3.0.0
-  dataVolumeCapacity: 15Gi
+  dataVolumeCapacity: 10Gi
   tls:
     secretRef: tls-controlcenter
-  authorization:
-    type: rbac
-  configOverrides:
-    server:
-      - "confluent.controlcenter.mode.enable=all"
-      - "confluent.metadata.enable.server.urls.refresh=false"
-      - "confluent.controlcenter.streams.confluent.metadata.enable.server.urls.refresh=false"
-      - "confluent.controlcenter.ui.autoupdate.enable=false"
-  dependencies:
-    kafka:
-      bootstrapEndpoint: kafka.confluent-nick.svc.cluster.local:9071
-      authentication:
-        type: mtls
-      tls:
-        enabled: true
-    mds:
-      endpoint: https://kafka.confluent-nick.svc.cluster.local:8090
-      tokenKeyPair:
-        secretRef: mds-token
-      authentication:
-        type: bearer
-        bearer:
-          secretRef: c3-mds-client
-      tls:
-        enabled: true
-    schemaRegistry:
-      url: https://schemaregistry.confluent-nick.svc.cluster.local:8081
-      tls:
-        enabled: true
-    ksqldb:
-      - name: ksql
-        url: https://ksqldb.confluent-nick.svc.cluster.local:8088
-        tls:
-          enabled: true
-    connect:
-      - name: connect
-        url:  https://connect.confluent-nick.svc.cluster.local:8083
-        tls:
-          enabled: true
   externalAccess:
     type: loadBalancer
     loadBalancer:
       domain: ps.eks.nick
       annotations:
         service.beta.kubernetes.io/aws-load-balancer-scheme: "internet-facing"
-  podTemplate:
-    probe:
-      readiness:
-        initialDelaySeconds: 180
-      liveness:
-        initialDelaySeconds: 180
-    podSecurityContext:
-      runAsUser: 0
-  license:
-    globalLicense: true
+  dependencies:
+    prometheusClient:
+      url: https://controlcenter-next-gen.confluent-nick.svc.cluster.local:9090
+      authentication:
+        type: basic
+        basic:
+          secretRef: prometheus-client-creds
+      tls:
+        enabled: true
+        secretRef: tls-prometheus-client
+    alertManagerClient:
+      url: https://controlcenter-next-gen.confluent-nick.svc.cluster.local:9093
+      authentication:
+        type: basic
+        basic:
+          secretRef: alertmanager-client-creds
+      tls:
+        enabled: true
+        secretRef: tls-alertmanager-client
+  services:
+    prometheus:
+      image: confluentinc/cp-enterprise-prometheus:2.2.0
+      authentication:
+        type: basic
+        basic:
+          secretRef: prometheus-credentials
+      tls:
+        secretRef: tls-prometheus
+      pvc:
+        dataVolumeCapacity: 10Gi
+    alertmanager:
+      image: confluentinc/cp-enterprise-alertmanager:2.2.0
+      authentication:
+        type: basic
+        basic:
+          secretRef: alertmanager-credentials
+      tls:
+        secretRef: tls-alertmanager
