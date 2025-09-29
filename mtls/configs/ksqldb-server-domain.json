@@ -1,7 +1,7 @@
 {
-  "CN": "ksql",
+  "CN": "ksqldb",
   "hosts": [
-    "ksql",
+    "ksqldb",
     "ksqldb.confluent-nick.svc.cluster.local",
     "*.ksqldb.confluent-nick.svc.cluster.local",
     "*.ps.eks.nick"

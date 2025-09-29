@@ -37,6 +37,21 @@ spec:
       tls:
         enabled: true
         secretRef: tls-alertmanager-client
+    schemaRegistry:
+      url: https://schemaregistry.confluent-nick.svc.cluster.local:8081
+      tls:
+        enabled: true
+    ksqldb:
+      - name: ksqldb
+        url: https://ksqldb.confluent-nick.svc.cluster.local:8088
+        tls:
+          enabled: true
+          secretRef: tls-controlcenter
+    connect:
+      - name: connect-dev
+        url: https://connect.confluent-nick.svc.cluster.local:8083
+        tls:
+          enabled: true
   services:
     prometheus:
       image: confluentinc/cp-enterprise-prometheus:2.2.0

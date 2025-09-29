@@ -15,9 +15,9 @@ spec:
     type: rbac
   configOverrides:
     server:
-      - "confluent.metadata.enable.server.urls.refresh=false"
-      - "ksql.confluent.metadata.enable.server.urls.refresh=false"
-      - "confluent.support.metrics.enable=false"
+      - 'confluent.support.metrics.enable=false'
+    jvm:
+      - "-Djavax.net.debug=ssl:handshake"
   dependencies:
     kafka:
       bootstrapEndpoint: kafka.confluent-nick.svc.cluster.local:9071

@@ -48,6 +48,7 @@ spec:
           domain: ps.eks.nick
           annotations:
             service.beta.kubernetes.io/aws-load-balancer-scheme: "internet-facing"
+            service.beta.kubernetes.io/aws-load-balancer-additional-resource-tags: "cflt_service=federal_ps,cflt_managed_id=federal_ps,cflt_managed_by=terraform,cflt_partition=federal_ps,cflt_environment=dev,cflt_keep_until=2050/03/15"
   authorization:
     type: rbac
     superUsers:

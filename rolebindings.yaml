@@ -23,7 +23,7 @@ spec:
     type: user
     name: testadmin
   clustersScopeByIds:
-    schemaRegistryClusterId: id_schemaregistry_confluent
+    schemaRegistryClusterId: id_schemaregistry_confluent-nick
   role: SystemAdmin
   ## if use other kafkaRestClass except for default, need to configure accordingly
   #kafkaRestClassRef:
@@ -41,7 +41,7 @@ spec:
     type: user
     name: testadmin
   clustersScopeByIds:
-    connectClusterId: confluent.connect
+    connectClusterId: confluent-nick.connect
   role: SystemAdmin
   ## if use other kafkaRestClass except for default, need to configure accordingly
   #kafkaRestClassRef:
@@ -59,7 +59,7 @@ spec:
     type: user
     name: testadmin
   clustersScopeByIds:
-    ksqlClusterId: confluent.ksqldb_
+    ksqlClusterId: confluent-nick.ksqldb_
   role: ResourceOwner
   resourcePatterns:
     - name: ksql-cluster
@@ -76,15 +76,32 @@ metadata:
   namespace: confluent-nick
 spec:
   clustersScopeByIds:
-    ksqlClusterId: confluent.ksqldb_
+    ksqlClusterId: confluent-nick.ksqldb_
   principal:
     type: user
-    name: ksql
+    name: ksqldb
   role: ResourceOwner
   resourcePatterns:
   - name: ksql-cluster
     patternType: LITERAL
     resourceType: KsqlCluster
+---
+apiVersion: platform.confluent.io/v1beta1
+kind: ConfluentRolebinding
+metadata:
+  name: c3-ksql-rb-cluster
+  namespace: confluent-nick
+spec:
+  clustersScopeByIds:
+    ksqlClusterId: confluent-nick.ksqldb_
+  principal:
+    type: user
+    name: c3
+  role: ResourceOwner
+  resourcePatterns:
+    - name: ksql-cluster
+      patternType: LITERAL
+      resourceType: KsqlCluster
 ---
 # rolebindings for ksql migrations example
 apiVersion: platform.confluent.io/v1beta1
@@ -100,7 +117,7 @@ spec:
     - name: confluent.ksqldb_ksql_MIGRATION
       patternType: PREFIXED
       resourceType: Topic
-    - name: _confluent-ksql-confluent.ksqldb_
+    - name: _confluent-ksql-confluent-nick.ksqldb_
       patternType: PREFIXED
       resourceType: Topic
     - name: test
